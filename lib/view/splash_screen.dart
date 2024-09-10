@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             FadeTransition(
               opacity: _animation,
               child: const Text(
-                'I-FAR',
+                'Pilog IDQM',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
