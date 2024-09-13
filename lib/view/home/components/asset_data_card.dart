@@ -1,143 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:pilog_idqm/global/app_colors.dart';
 
 class AssetDataCard extends StatefulWidget {
-  final String? title;
-  final String? data;
-  final String? entityName;
-  final String? adminBuilding;
-  final String? condition;
-  final String? tag;
-  final String? wave;
-  final String? omDepartment;
-  final String? locationPriority;
-  final String? complexName;
-  final String? floorLevel;
-  final String? floorLevelName;
-  final String? spaceLocation;
-  final String? spaceLocationName;
-  final String? assertDescription;
-  final String? asserTitle;
-  final String? pgGrade;
-  final String? pgGradeName;
-  final String? fieldComments;
+  final String? classTerm;
   final String? recordNo;
-  final String? astOrgId;
-  final String? orgName;
-  final String? regionId;
-  final String? regionName;
-  final String? cityId;
-  final String? cityName;
-  final String? areaId;
-  final String? areaName;
-  final String? districtId;
-  final String? districtName;
-  final String? sectionId;
-  final String? sectionName;
-  final String? gisLocator;
-  final String? gisLinkId;
-  final String? geoLocation;
-  final String? geoMapLink;
-  final String? existTagNumber;
-  final String? manufacture;
-  final String? model;
-  final String? pinNumber;
-  final String? manufactureYear;
-  final String? drawingNumber;
-  final String? drawingName;
-  final String? drawingRev;
-  final String? drawingType;
-  final String? surveyedBy;
-  final String? surveyedDate;
-  final String? internalQcBy;
-  final String? internalQcDate;
-  final String? clientQcBy;
-  final String? clientQcDate;
-  final String? clientQcStatus;
-  final String? clientQcCommets;
-  final String? submissionTo;
-  final String? submissionDATE;
-  final String? uniClassCode;
-  final String? uniClassTitle;
-  final String? functionalClassification;
-  final String? uniEnCode;
-  final String? uniEnTitle;
-  final String? uniClassSlCode;
-  final String? uniClassSlTitle;
-  final String? assetVariantDescription;
-  final String? asBuiltRef;
-  final String? assetQty;
+  final String? shortDescription;
+  final String? longDesc;
+  final String? status;
+
+  // final String? registerColumn8;
+  // final String? registerColumn5;
+  // final String? abbreviation;
+  // final String? clientNumber;
+  // final String? equipmentCategory;
+  // final String? unspscCode;
+  // final String? buCustCol26;
+  // final String? startupDate;
+  // final String? createdOn;
+  // final String? domain;
+  // final String? erpsfd;
+  // final String? descriptionOfTechObj;
+  // final String? originalShort;
+  // final String? typeOfTechObj;
+  // final String? constructionYear;
+  // final String? plant;
+  // final String? auditId;
+  // final String? manufacturer;
+  // final String? manufacturerModel;
+  // final String? equipCatForProduction;
+  // final String? vendorNumber;
+  // final String? floc;
+  // final String? recordNo;
+  // final String? objectNumber;
+  // final String? orgnId;
+  // final String? materialNumber;
 
   AssetDataCard({
     Key? key,
-    required this.title,
-    required this.data,
-    required this.entityName,
-    required this.adminBuilding,
-    required this.condition,
-    required this.tag,
-    this.wave,
-    this.omDepartment,
-    this.locationPriority,
-    this.complexName,
-    this.floorLevel,
-    this.floorLevelName,
-    this.spaceLocation,
-    this.spaceLocationName,
-    this.assertDescription,
-    this.asserTitle,
-    this.pgGrade,
-    this.pgGradeName,
-    this.fieldComments,
     this.recordNo,
-    this.astOrgId,
-    this.orgName,
-    this.regionId,
-    this.regionName,
-    this.cityId,
-    this.cityName,
-    this.areaId,
-    this.areaName,
-    this.districtId,
-    this.districtName,
-    this.sectionId,
-    this.sectionName,
-    this.gisLocator,
-    this.gisLinkId,
-    this.geoLocation,
-    this.geoMapLink,
-    this.existTagNumber,
-    this.asBuiltRef,
-    this.assetQty,
-    this.uniEnCode,
-    this.uniEnTitle,
-    this.uniClassSlCode,
-    this.uniClassSlTitle,
-    this.assetVariantDescription,
-    this.clientQcBy,
-    this.clientQcDate,
-    this.clientQcStatus,
-    this.clientQcCommets,
-    this.drawingName,
-    this.drawingNumber,
-    this.drawingRev,
-    this.drawingType,
-    this.functionalClassification,
-    this.internalQcBy,
-    this.internalQcDate,
-    this.manufacture,
-    this.manufactureYear,
-    this.model,
-    this.pinNumber,
-    this.submissionDATE,
-    this.submissionTo,
-    this.surveyedBy,
-    this.surveyedDate,
-    this.uniClassCode,
-    this.uniClassTitle,
+    this.classTerm,
+    this.shortDescription,
+    this.longDesc,
+    this.status
+    // this.registerColumn8,
+    // this.registerColumn5,
+    // this.abbreviation,
+    // this.clientNumber,
+    // this.equipmentCategory,
+    // this.unspscCode,
+    // this.buCustCol26,
+    // this.startupDate,
+    // this.createdOn,
+    // this.domain,
+    // this.erpsfd,
+    // this.descriptionOfTechObj,
+    // this.originalShort,
+    // this.typeOfTechObj,
+    // this.constructionYear,
+    // this.plant,
+    // this.auditId,
+    // this.manufacturer,
+    // this.manufacturerModel,
+    // this.equipCatForProduction,
+    // this.vendorNumber,
+    // this.floc,
+    // this.recordNo,
+    // this.objectNumber,
+    // this.orgnId,
+    // this.materialNumber,
   }) : super(key: key);
-
-  
 
   @override
   State<AssetDataCard> createState() => _AssetDataCardState();
@@ -149,47 +79,53 @@ class _AssetDataCardState extends State<AssetDataCard> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Card(
-            elevation: 5,
+            elevation: 6,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
             ),
+            color: Color(0xff7165E3),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Header with gradient background and title
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.blueShadeGradiant.withOpacity(0.7),
+                    gradient: LinearGradient(
+                      colors: [Color(0xff7165E3), Colors.indigo],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
                   child: Center(
                     child: Text(
-                      widget.title ?? "",
+                      widget.classTerm ?? "",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Color(0xffe8e7f4),
                       ),
                     ),
                   ),
                 ),
+                // Content with information rows
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildInfoRow("O&M Department", widget.data),
-                      _buildInfoRow("Entity Name", widget.entityName),
-                      _buildInfoRow(
-                          "Functional Classification", widget.adminBuilding),
-                      _buildInfoRow("PC Grade", widget.condition),
-                      _buildInfoRow("RC O&M Asset Tag#", widget.tag),
+                      _buildInfoRow("Register Column 6", widget.recordNo),
+                      SizedBox(height: 5),
+                      _buildInfoRow("Abbreviation", widget.status),
+                     
+                      
                     ],
                   ),
                 ),
@@ -205,12 +141,11 @@ class _AssetDataCardState extends State<AssetDataCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
-        crossAxisAlignment:
-            CrossAxisAlignment.start, // Ensures multiline text aligns properly
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             Icons.info_outline,
-            color: AppColors.blueShadeGradiant,
+            color: Color(0xffe8e7f4),
           ),
           SizedBox(width: 8),
           Text(
@@ -218,7 +153,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppColors.blueShadeGradiant,
+              color: Color(0xffe8e7f4),
             ),
           ),
           Flexible(
@@ -228,7 +163,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
                 value ?? "",
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.black87,
+                  color: Colors.white,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

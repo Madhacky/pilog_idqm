@@ -81,30 +81,28 @@ class ClientMgrHomeController extends GetxController
     required int offset,
     required int rows,
   }) async {
-    final String host_url = "https://ifar.pilogcloud.com/";
     List<Widget> assetCardList = [];
     String reqid = '';
-    String? role = await SharedPreferencesHelper.getRole();
+    // String? role = await SharedPreferencesHelper.getRole();
     String? userName = await SharedPreferencesHelper.getUsername();
     String finalquery =
-        "UPPER (MASTER_COLUMN6) LIKE UPPER ('%$value%') AND RECORD_NO IS NOT NULL OFFSET $offset ROWS FETCH NEXT $rows ROWS ONLY"
-            .toUpperCase();
+        "UPPER (RECORD_NO) LIKE UPPER ('%$value%')".toUpperCase();
 
-    if (role == 'PM_FAR_IDAM_CLIENT_MGR') {
-      reqid = "FEC608B8AA8BB026E0538400000AFD69";
-    } else if (role == 'PM_FAR_IDAM_CLIENT_QC') {
-      reqid = 'FEC608B8AA89B026E0538400000AFD69';
-    }
+    // if (role == 'PM_FAR_IDAM_CLIENT_MGR') {
+    //   reqid = "FEC608B8AA8BB026E0538400000AFD69";
+    // } else if (role == 'PM_FAR_IDAM_CLIENT_QC') {
+    //   reqid = 'FEC608B8AA89B026E0538400000AFD69';
+    // }
 
     try {
       final response = await ApiServices().requestPostForApi(
         url: "${host_url}getApiRequestResultsData",
         dictParameter: {
-          "apiReqId": reqid,
+          "apiReqId": "7B105EDE59C442D585198D501FED3B51",
           "apiReqCols": "",
           "apiReqWhereClause": finalquery,
-          "apiReqOrgnId": "C1F5CFB03F2E444DAE78ECCEAD80D27D",
-          "apiReqUserId": userName!.toUpperCase(),
+          "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
+          "apiReqUserId": "KT_VBR_MGR",
           "apiRetType": "JSON"
         },
         authToken: false,
@@ -115,71 +113,11 @@ class ClientMgrHomeController extends GetxController
         var result = jsonDecode(response!.data.toString());
         for (var object in result!['apiDataArray']) {
           assetCardList.add(AssetDataCard(
-            tag: object["BU_DH_CUST_COL37"],
-            condition: object["CONDITION_MEANING"],
-            adminBuilding: object["BU_DH_CUST_COL25"],
-            entityName: object["BU_DH_CUST_COL18"],
-            data: object["BU_DH_CUST_COL30"],
-            title: object["ABBREVIATION"],
-            wave: object["REGISTER_COLUMN5"],
-            omDepartment: object["BU_DH_CUST_COL30"],
-            locationPriority: object["BU_DH_CUST_COL57"],
-            complexName: object["BU_DH_CUST_COL58"],
-            floorLevel: object["BU_DH_CUST_COL52"],
-            floorLevelName: object["BU_DH_CUST_COL61"],
-            spaceLocation: object["BU_DH_CUST_COL20"],
-            spaceLocationName: object["BU_DH_CUST_COL22"],
-            assertDescription: object["MASTER_COLUMN6"],
-            asserTitle: object["ASSET_PRODUCT_TITLE"],
-            pgGrade: object["BU_DH_CUST_COL39"],
-            pgGradeName: object["CONDITION_MEANING"],
-            fieldComments: object["FIELD_COMMENTS"],
+            classTerm: object["CLASS_TERM"],
+            longDesc: object["MASTER_COLUMN6"],
             recordNo: object["RECORD_NO"],
-            areaId: object["ASSET_AREA_ID"],
-            areaName: object["CUSTOM_DH_COLUMN8"],
-            astOrgId: object["ASSET_ORG_ID"],
-            cityId: object["ASSET_CITY_ID"],
-            cityName: object["CUSTOM_DH_COLUMN7"],
-            districtId: object["ASSET_DISTRICT_ID"],
-            districtName: object["CUSTOM_DH_COLUMN9"],
-            geoLocation: object["BU_DH_CUST_COL34"],
-            geoMapLink: object["BU_DH_CUST_COL33"],
-            gisLinkId: object["BU_DH_CUST_COL57"],
-            gisLocator: object["BU_DH_CUST_COL53"],
-            orgName: object["CUSTOM_DH_COLUMN5"],
-            regionId: object["ASSET_REGION_ID"],
-            regionName: object["CUSTOM_DH_COLUMN6"],
-            sectionId: object["ASSET_SEC_ID"],
-            sectionName: object["CUSTOM_DH_COLUMN10"],
-            asBuiltRef: object["BU_DH_CUST_COL29"],
-            assetQty: object["BU_DH_CUST_COL38"],
-            assetVariantDescription: object["MASTER_COLUMN5"],
-            uniClassSlCode: object["BU_DH_CUST_COL21"],
-            uniClassSlTitle: object["ASSET_SPACE_TITLE"],
-            uniClassCode: object["CUSTOM_DH_COLUMN13"],
-            uniClassTitle: object["ASSET_COMPLEX_NAME"],
-            functionalClassification: object["BU_DH_CUST_COL25"],
-            uniEnCode: object["CUSTOM_DH_COLUMN15"],
-            uniEnTitle: object["ASSET_ENTITY_NAME"],
-            surveyedBy: object["SURVEYED_BY"],
-            surveyedDate: object["SURVEYED_DATE"],
-            internalQcBy: object["INTERNAL_QC_BY"],
-            internalQcDate: object["INTERNAL_QC_DATE"],
-            clientQcBy: object["CLIENT_QC_BY"],
-            clientQcDate: object["CLIENT_QC_DATE"],
-            clientQcStatus: object["MASTER_COLUMN14"],
-            clientQcCommets: object["MASTER_COLUMN13"],
-            submissionTo: object["SUBMISSION_TO"],
-            submissionDATE: object["SUBMISSION_DATE"],
-            drawingName: object["DRAWING_NAME"],
-            drawingNumber: object["DRAWING_NUMBER"],
-            drawingType: object["DRAWING_TYPE"],
-            drawingRev: object["DRAWING_REV"],
-            existTagNumber: object["BU_DH_CUST_COL35"],
-            manufactureYear: object["CUSTOM_DH_COLUMN1_DATE"],
-            manufacture: object["BU_DH_CUST_COL46"],
-            model: object["BU_DH_CUST_COL51"],
-            pinNumber: object["BU_DH_CUST_COL45"],
+            status: object["STATUS"],
+            shortDescription: object["MASTER_COLUMN5"],
           ));
         }
         log("adataaaaaa ${result!['apiDataArray'][0]["ASSET_COMPLEX_NAME"]}");

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:pilog_idqm/controller/login_controller.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
+import 'package:pilog_idqm/view/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -183,12 +184,15 @@ class _LoginScreenState extends State<LoginScreen>
   Widget buildLoginButton() {
     return ElevatedButton(
       onPressed: () async {
-        if (controller.userNameText.text.isEmpty ||
-            controller.passWordText.text.isEmpty) {
-          ToastCustom.errorToast(context, "Please enter username and password");
-        } else {
-          await controller.signIn(context);
-        }
+        Future.delayed(Duration(seconds: 2),(){
+          Get.to(ClientMgrHomeScreen());
+        });
+        // if (controller.userNameText.text.isEmpty ||
+        //     controller.passWordText.text.isEmpty) {
+        //   ToastCustom.errorToast(context, "Please enter username and password");
+        // } else {
+        //   await controller.signIn(context);
+        // }
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(15),

@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/helpers/api_services.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
@@ -35,7 +33,7 @@ class LoginController extends GetxController {
     LoginResponse? userLoginModel;
     try {
       final response = await ApiServices().requestPostForApi(
-          url: "https://ifar.pilogcloud.com/appUserLogin",
+          url: "https://imdrm.pilogcloud.com/appUserLogin",
           dictParameter: {
             "rsUsername": userName.toUpperCase(),
             "rsPassword": passWord,
