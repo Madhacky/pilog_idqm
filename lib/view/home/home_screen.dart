@@ -8,6 +8,7 @@ import 'package:pilog_idqm/view/home/components/ocr.dart';
 import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:pilog_idqm/view/home/components/home_loading_shimmer.dart';
+import 'package:pilog_idqm/view/home/components/parametric_screen.dart';
 import 'package:pilog_idqm/view/ocr.dart';
 import 'package:pilog_idqm/view/profile/profile.dart';
 import 'package:pilog_idqm/view/profile/settings.dart';
@@ -231,16 +232,31 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                 ));
           },
         ),
-        // Bubble(
-        //   title: "Logout",
-        //   iconColor: Colors.white,
-        //   bubbleColor: Colors.red,
-        //   icon: Icons.logout,
-        //   titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
-        //   onPress: () {
-        //    // controller.onLogout(context);
-        //   },
-        // ),
+         Bubble(
+          title: "Paramatric Screen",
+          iconColor: Colors.white,
+          bubbleColor: Colors.blue,
+          icon: Icons.document_scanner,
+          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>  ParametricSearchScreen(),
+                  //FilePickerPreviewWidget(apiUrl: "",authToken: false,),
+                ));
+          },
+        ),
+        Bubble(
+          title: "Logout",
+          iconColor: Colors.white,
+          bubbleColor: Colors.red,
+          icon: Icons.logout,
+          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+           // controller.onLogout(context);
+          },
+        ),
       ],
       animation: controller.animation,
       onPress: controller.toggleAnimation,

@@ -1,0 +1,116 @@
+import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
+class SearchableDropdown extends StatefulWidget {
+  final RxBool isItemLoaded;
+  final Icon? prefixIcon;
+  final String? hintText;
+  final String? searchBoxHintText;
+  final RxList<String> items;
+  final String? Function(String?)? validator;
+  String? selectedValue;
+  void Function(String?)? onChanged;
+  final bool isRequired;
+
+  SearchableDropdown({
+    Key? key,
+    required this.isItemLoaded,
+    this.searchBoxHintText,
+    this.prefixIcon,
+    this.hintText,
+    required this.items,
+    required this.selectedValue,
+    this.validator,
+    required this.onChanged,
+    required this.isRequired,
+  }) : super(key: key);
+
+  @override
+  State<SearchableDropdown> createState() => _SearchableDropdownState();
+}
+
+class _SearchableDropdownState extends State<SearchableDropdown> {
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+
+    return Obx(() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+      child: Row(
+        children: [
+          Flexible(
+            child: DropdownSearch<String>(
+              enabled: widget.items.isEmpty ? false : true,
+              popupProps: PopupProps.menu(
+                searchFieldProps: TextFieldProps(
+                  decoration: InputDecoration(
+                    hintText: widget.searchBoxHintText,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                ),
+                showSearchBox: true,
+                showSelectedItems: true,
+                menuProps: MenuProps(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  backgroundColor: isDarkMode ? Colors.grey[800] : Colors.white,
+                ),
+              ),
+              items: widget.items,
+              dropdownDecoratorProps: DropDownDecoratorProps(
+                dropdownSearchDecoration: InputDecoration(
+                  suffixIconConstraints: const BoxConstraints(minHeight: 50, minWidth: 4),
+                  prefixIcon: widget.prefixIcon,
+                  suffixIcon: Container(
+                    width: 2,
+                    height: double.minPositive,
+                    color: Colors.red,
+                  ),
+                  hintStyle: TextStyle(color: isDarkMode ? Colors.white70 : Color(0xFF6CA8F1)),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: isDarkMode ? Colors.grey[600]! : AppColors.grey300, width: 2),
+                  ),
+                  labelText: widget.hintText,
+                  isDense: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(
+                      color: isDarkMode ? Colors.blueAccent : AppColors.appColor,
+                      width: 2,
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: widget.isItemLoaded.value && widget.items.isEmpty
+                      ? (isDarkMode ? Colors.grey[600] : AppColors.chineseGrey)
+                      : (isDarkMode ? Colors.grey[800] : AppColors.chineseGrey),
+                ),
+              ),
+              onChanged: widget.onChanged,
+              selectedItem: widget.selectedValue,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: widget.isRequired ? Colors.red : (isDarkMode ? Colors.grey[600] : AppColors.grey300),
+            ),
+            height: 47,
+            width: 4,
+          ),
+        ],
+      ),
+    ));
+  }
+}
