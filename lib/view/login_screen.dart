@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:pilog_idqm/controller/login_controller.dart';
-import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,78 +10,52 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with SingleTickerProviderStateMixin {
-  final LoginController controller =
-      Get.put(LoginController());
-
-
-
+class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+  final LoginController controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          buildBackground(),
-          Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(height: 30),
-                  Image(
-                    height: 200,
-                    image: AssetImage("assets/Images/loginlogo.gif"),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Welcome Back!',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Please login to your account',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white70,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  buildLoginForm(),
-                ],
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 30),
+              Image(
+                height: 90,
+                image: AssetImage("assets/images/PiLog Logo.png"),
               ),
-            ),
+              const SizedBox(height: 20),
+              Text(
+                'Welcome Back!',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Please login to your account',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 40),
+              buildLoginForm(),
+            ],
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildBackground() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.black87, Colors.blue],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
         ),
-      ),
-      child: CustomPaint(
-        painter: BackgroundPainter(),
-        child: Container(),
       ),
     );
   }
 
   Widget buildLoginForm() {
     return Card(
-      elevation: 8.0,
+      elevation: 0.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
@@ -116,15 +88,15 @@ class _LoginScreenState extends State<LoginScreen>
       decoration: InputDecoration(
         labelText: 'User Name',
         labelStyle: TextStyle(color: Colors.blueGrey),
-        fillColor: Colors.grey[200],
+        fillColor: Colors.grey[100],
         filled: true,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.blueAccent),
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
       ),
       controller: controller.userNameText,
@@ -143,15 +115,15 @@ class _LoginScreenState extends State<LoginScreen>
       decoration: InputDecoration(
         labelText: 'Password',
         labelStyle: TextStyle(color: Colors.blueGrey),
-        fillColor: Colors.grey[200],
+        fillColor: Colors.grey[100],
         filled: true,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.blueAccent),
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey),
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
       ),
     );
@@ -184,15 +156,11 @@ class _LoginScreenState extends State<LoginScreen>
   Widget buildLoginButton() {
     return ElevatedButton(
       onPressed: () async {
-        Future.delayed(Duration(seconds: 2),(){
+        // Simple animation effect
+        Get.focusScope!.unfocus(); // Close the keyboard
+        Future.delayed(Duration(seconds: 1), () {
           Get.to(ClientMgrHomeScreen());
         });
-        // if (controller.userNameText.text.isEmpty ||
-        //     controller.passWordText.text.isEmpty) {
-        //   ToastCustom.errorToast(context, "Please enter username and password");
-        // } else {
-        //   await controller.signIn(context);
-        // }
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(15),
@@ -211,28 +179,3 @@ class _LoginScreenState extends State<LoginScreen>
   }
 }
 
-class BackgroundPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black.withOpacity(0.3)
-      ..style = PaintingStyle.fill;
-
-    final path = Path()
-      ..moveTo(0, size.height * 0.7)
-      ..quadraticBezierTo(size.width * 0.25, size.height * 0.6,
-          size.width * 0.5, size.height * 0.7)
-      ..quadraticBezierTo(
-          size.width * 0.75, size.height * 0.8, size.width, size.height * 0.7)
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
-  }
-}

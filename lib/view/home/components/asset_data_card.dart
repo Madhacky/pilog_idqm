@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
 
 class AssetDataCard extends StatefulWidget {
   final String? classTerm;
@@ -6,6 +8,7 @@ class AssetDataCard extends StatefulWidget {
   final String? shortDescription;
   final String? longDesc;
   final String? status;
+  final String? imageName;
 
   // final String? registerColumn8;
   // final String? registerColumn5;
@@ -34,40 +37,42 @@ class AssetDataCard extends StatefulWidget {
   // final String? orgnId;
   // final String? materialNumber;
 
-  AssetDataCard({
-    Key? key,
-    this.recordNo,
-    this.classTerm,
-    this.shortDescription,
-    this.longDesc,
-    this.status
-    // this.registerColumn8,
-    // this.registerColumn5,
-    // this.abbreviation,
-    // this.clientNumber,
-    // this.equipmentCategory,
-    // this.unspscCode,
-    // this.buCustCol26,
-    // this.startupDate,
-    // this.createdOn,
-    // this.domain,
-    // this.erpsfd,
-    // this.descriptionOfTechObj,
-    // this.originalShort,
-    // this.typeOfTechObj,
-    // this.constructionYear,
-    // this.plant,
-    // this.auditId,
-    // this.manufacturer,
-    // this.manufacturerModel,
-    // this.equipCatForProduction,
-    // this.vendorNumber,
-    // this.floc,
-    // this.recordNo,
-    // this.objectNumber,
-    // this.orgnId,
-    // this.materialNumber,
-  }) : super(key: key);
+  AssetDataCard(
+      {Key? key,
+      this.recordNo,
+      this.classTerm,
+      this.shortDescription,
+      this.longDesc,
+      this.status, this.imageName
+
+      // this.registerColumn8,
+      // this.registerColumn5,
+      // this.abbreviation,
+      // this.clientNumber,
+      // this.equipmentCategory,
+      // this.unspscCode,
+      // this.buCustCol26,
+      // this.startupDate,
+      // this.createdOn,
+      // this.domain,
+      // this.erpsfd,
+      // this.descriptionOfTechObj,
+      // this.originalShort,
+      // this.typeOfTechObj,
+      // this.constructionYear,
+      // this.plant,
+      // this.auditId,
+      // this.manufacturer,
+      // this.manufacturerModel,
+      // this.equipCatForProduction,
+      // this.vendorNumber,
+      // this.floc,
+      // this.recordNo,
+      // this.objectNumber,
+      // this.orgnId,
+      // this.materialNumber,
+      })
+      : super(key: key);
 
   @override
   State<AssetDataCard> createState() => _AssetDataCardState();
@@ -76,64 +81,77 @@ class AssetDataCard extends StatefulWidget {
 class _AssetDataCardState extends State<AssetDataCard> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Card(
-            elevation: 6,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            color: Color(0xff7165E3),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Header with gradient background and title
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Color(0xff7165E3), Colors.indigo],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+    return InkWell(
+      onTap: () => Navigator.push(
+          context,
+          CupertinoPageRoute<bool>(
+              builder: (_) => AssetDetailsScreen(
+                    classTerm: widget.classTerm,
+                    longDesc: widget.longDesc,
+                    recordNo: widget.recordNo,
+                    shortDescription: widget.shortDescription,
+                    status: widget.status,imageName: widget.imageName,
+                  ))),
+      child: Column(
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
+            child: Card(
+              elevation: 6,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+           //   color: Color(0xff7165E3),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with gradient background and title
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xff7165E3), Colors.indigo],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      widget.classTerm ?? "",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xffe8e7f4),
+                    child: Center(
+                      child: Text(
+                        widget.classTerm ?? "",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xffe8e7f4),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                // Content with information rows
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildInfoRow("Register Column 6", widget.recordNo),
-                      SizedBox(height: 5),
-                      _buildInfoRow("Abbreviation", widget.status),
-                     
-                      
-                    ],
+                  // Content with information rows
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildInfoRow("RECORD NO", widget.recordNo),
+                        SizedBox(height: 5),
+                        _buildInfoRow("STATUS", widget.status),
+                        //  SizedBox(height: 5),
+                        // _buildInfoRow("CLASS_TERM	", widget.classTerm),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -143,17 +161,12 @@ class _AssetDataCardState extends State<AssetDataCard> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            Icons.info_outline,
-            color: Color(0xffe8e7f4),
-          ),
-          SizedBox(width: 8),
           Text(
             "$label: ",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Color(0xffe8e7f4),
+            //  color: Color(0xffe8e7f4),
             ),
           ),
           Flexible(
@@ -163,7 +176,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
                 value ?? "",
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
+                //  color: Colors.white,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

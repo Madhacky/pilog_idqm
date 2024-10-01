@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -82,6 +83,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Navigate to Help & Support screen
             },
           ),
+           SettingsTile(
+            icon: Icons.logout,
+            title: 'Logout',
+            onTap: () {
+              ClientMgrHomeController().onLogout(context);
+              // Navigate to Help & Support screen
+            },
+          ),
         ],
       ),
     );
@@ -103,7 +112,7 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return ListTile(shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
       leading: Icon(icon, color: const Color(0xff7165E3)),
       title: Text(
         title,

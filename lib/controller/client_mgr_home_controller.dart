@@ -1,15 +1,22 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'dart:math' as math;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import 'package:pilog_idqm/helpers/api_services.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
+import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
+import 'package:pilog_idqm/view/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientMgrHomeController extends GetxController
@@ -25,6 +32,7 @@ class ClientMgrHomeController extends GetxController
   // Bools
   RxBool isAssetDataLoaded = RxBool(false);
   late Future getAssetdataFuture;
+  late Future getImgFuture;
   var logindata;
   var Finaldata;
 
@@ -61,8 +69,8 @@ class ClientMgrHomeController extends GetxController
   }
 
   void onLogout(BuildContext context) {
-    toggleAnimation();
-    logoutAPI(context, logindata);
+    //  toggleAnimation();
+    logoutAPI(context);
     // Handle Logout action here
   }
 
@@ -76,17 +84,15 @@ class ClientMgrHomeController extends GetxController
   }
 
   // APIS
+  List<Widget> assetCardList = [];
   Future getAssetData({
     required String value,
     required int offset,
     required int rows,
   }) async {
-    List<Widget> assetCardList = [];
-    String reqid = '';
-    // String? role = await SharedPreferencesHelper.getRole();
-    String? userName = await SharedPreferencesHelper.getUsername();
+ 
     String finalquery =
-        "UPPER (RECORD_NO) LIKE UPPER ('%$value%')".toUpperCase();
+        "UPPER (CLASS_TERM) LIKE UPPER ('$value') AND RECORD_NO IS NOT NULL OFFSET $offset ROWS FETCH NEXT $rows ROWS ONLY";
 
     // if (role == 'PM_FAR_IDAM_CLIENT_MGR') {
     //   reqid = "FEC608B8AA8BB026E0538400000AFD69";
@@ -120,7 +126,7 @@ class ClientMgrHomeController extends GetxController
             shortDescription: object["MASTER_COLUMN5"],
           ));
         }
-        log("adataaaaaa ${result!['apiDataArray'][0]["ASSET_COMPLEX_NAME"]}");
+        log("adataaaaaa ${result!['apiDataArray'][0]["RECORD_NO"]}");
         return assetCardList;
       } else {
         return Future.error('Error: ${response?.statusCode}');
@@ -171,19 +177,19 @@ class ClientMgrHomeController extends GetxController
   }
 
   Future<dynamic> DisplayImage({required String recordNo}) async {
-    final String host_url = "https://ifar.pilogcloud.com/";
-    final String reqid = "6085DAB947664BEAB39921AC425BB71A";
-    final String orgnId = "C1F5CFB03F2E444DAE78ECCEAD80D27D";
-    final String username =
-        (await SharedPreferencesHelper.getUsername())!.toUpperCase();
+    // final String host_url = "https://ifar.pilogcloud.com/";
+    // final String reqid = "6085DAB947664BEAB39921AC425BB71A";
+    // final String orgnId = "C1F5CFB03F2E444DAE78ECCEAD80D27D";
+    // final String username =
+    //     (await SharedPreferencesHelper.getUsername())!.toUpperCase();
 
     var headers = {'Content-Type': 'application/json'};
     var body = json.encode({
-      "apiReqId": reqid,
+      "apiReqId": "6085DAB947664BEAB39921AC425BB71A",
       "apiReqCols": "",
       "apiReqWhereClause": "RECORD_NO = '$recordNo'",
-      "apiReqOrgnId": orgnId,
-      "apiReqUserId": username,
+      "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
+      "apiReqUserId": "KT_VBR_MGR",
       "apiRetType": "JSON"
     });
 
@@ -214,54 +220,172 @@ class ClientMgrHomeController extends GetxController
     }
   }
 
-  //logout api
-  Future<void> logoutAPI(
-      BuildContext context, SharedPreferences logindata) async {
+//upload image
+
+// Function to upload image to API
+  Future<void> uploadImageApi(
+      File? file, String recordNumber, BuildContext context) async {
+    context.loaderOverlay.show();
+    // Convert XFile to File
+    //File file = File(xfile!.path);
+    log(base64Encode(file!.readAsBytesSync()));
+    int randomNo = math.Random().nextInt(1000);
+    String filename = "${recordNumber}_img_${randomNo.toString()}.jpg";
+
     var headers = {'Content-Type': 'application/json'};
-    var body = json.encode({"rsUsername": logindata.getString('username')});
+    var body = json.encode({
+      "apiReqId": "855A9F8A5A0A43E1BCD2A5C12546AB91",
+      "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
+      "apiAttachFalg": "Y",
+      "apiUpdateFalg": "",
+      "apiInsertFalg": "",
+      "apiDeleteFalg": "",
+      "apiReqUserId": "KT_VBR_MGR",
+      "855A9F8A5A0A43E1BCD2A5C12546AB91": [
+        {
+          "ACTIVE_FLAG": "Y",
+          "FILE_NAME": filename,
+          "REGION": "IN",
+          "LOCALE": "en_US",
+          "DEFAULT_FLAG": "N",
+          "ATTACH_TYPE": "Image",
+          "CONTENT": base64Encode(file.readAsBytesSync()),
+          "ATTACH_EXTENSION": "jpg",
+          "TYPE": "P",
+          "RECORD_NO": recordNumber
+        }
+      ]
+    });
 
     try {
       var response = await http.post(
-        Uri.parse(host_url + 'appUserlogout'),
+        Uri.parse('${host_url}updateInsertApiRequestData'),
         headers: headers,
         body: body,
       );
 
-      if (response.body == 'Success') {
-        logindata.setBool('login', true);
-        Get.deleteAll();
-        await SharedPreferencesHelper.clearAll();
-        Navigator.pushReplacementNamed(context, '/login');
-        Fluttertoast.showToast(
-          msg: "Thank You",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Color.fromRGBO(11, 74, 153, 1),
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+      if (response.statusCode == 200) {
+        if (context.mounted) {
+          context.loaderOverlay.hide();
+          ToastCustom.successToast(context, "Uploaded Successfully");
+        }
+        print("Upload successful: ${response.body}");
       } else {
-        Fluttertoast.showToast(
-          msg: response.reasonPhrase ?? 'Logout Failed',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        if (context.mounted) {
+          context.loaderOverlay.hide();
+          ToastCustom.errorToast(context, "Uploaded failed");
+        }
+        print("Failed: ${response.reasonPhrase}");
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: e.toString(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.SNACKBAR,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      print("Error: $e");
     }
+  }
+
+//delete image api
+  Future<void> imageDeleteApi(
+      String auditID, String recordNo, BuildContext context) async {
+        context.loaderOverlay.show();
+          
+    var dictParameter = {
+      "apiReqId": "9B7DB8414A274A0EB1133E5FFF9F3BAC",
+      "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
+      "apiAttachFlag": "",
+      "apiUpdateFalg": "",
+      "apiInsertFalg": "",
+      "apiDeleteFalg": "Y",
+      "apiReqUserId": "KT_VBR_MGR",
+      "9B7DB8414A274A0EB1133E5FFF9F3BAC": [
+        {"AUDIT_ID": auditID, "RECORD_NO": recordNo}
+      ]
+    };
+
+    // Call the requestPostForApi method
+    var response = await ApiServices().requestPostForApi(
+      url: '${host_url}updateInsertApiRequestData',
+      dictParameter: dictParameter,
+      authToken: false, // Adjust as needed for your auth token requirement
+    );
+
+    if (response != null && response.statusCode == 200) {
+         
+      if (context.mounted) {
+        ToastCustom.successToast(context, "Deleted Successfully");
+         context.loaderOverlay.hide();
+        Navigator.pop(context);
+      }
+    } else {
+     if (context.mounted) {
+        ToastCustom.errorToast(context, "Failed to delete");
+         context.loaderOverlay.hide();
+        Navigator.pop(context);
+      }
+    }
+    
+  }
+
+  //logout api
+  Future<void> logoutAPI(
+    BuildContext context,
+  ) async {
+    Get.deleteAll();
+    await SharedPreferencesHelper.clearAll();
+    Navigator.pushReplacement(
+        context, CupertinoPageRoute<bool>(builder: (_) => LoginScreen()));
+    Fluttertoast.showToast(
+      msg: "Thank You",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.SNACKBAR,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Color.fromRGBO(11, 74, 153, 1),
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+    //   var headers = {'Content-Type': 'application/json'};
+    //   var body = json.encode({"rsUsername":await SharedPreferencesHelper.getUsername()});
+
+    //   try {
+    //     var response = await http.post(
+    //       Uri.parse(host_url + 'appUserlogout'),
+    //       headers: headers,
+    //       body: body,
+    //     );
+
+    //     if (response.body == 'Success') {
+
+    //       Get.deleteAll();
+    //       await SharedPreferencesHelper.clearAll();
+    //       Navigator.pushReplacementNamed(context, '/login');
+    //       Fluttertoast.showToast(
+    //         msg: "Thank You",
+    //         toastLength: Toast.LENGTH_SHORT,
+    //         gravity: ToastGravity.SNACKBAR,
+    //         timeInSecForIosWeb: 1,
+    //         backgroundColor: Color.fromRGBO(11, 74, 153, 1),
+    //         textColor: Colors.white,
+    //         fontSize: 16.0,
+    //       );
+    //     } else {
+    //       Fluttertoast.showToast(
+    //         msg: response.reasonPhrase ?? 'Logout Failed',
+    //         toastLength: Toast.LENGTH_SHORT,
+    //         gravity: ToastGravity.SNACKBAR,
+    //         timeInSecForIosWeb: 1,
+    //         backgroundColor: Colors.red,
+    //         textColor: Colors.white,
+    //         fontSize: 16.0,
+    //       );
+    //     }
+    //   } catch (e) {
+    //     Fluttertoast.showToast(
+    //       msg: e.toString(),
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       gravity: ToastGravity.SNACKBAR,
+    //       timeInSecForIosWeb: 1,
+    //       backgroundColor: Colors.red,
+    //       textColor: Colors.white,
+    //       fontSize: 16.0,
+    //     );
+    //   }
   }
 }

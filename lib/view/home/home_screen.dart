@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
+import 'package:pilog_idqm/view/home/components/ocr.dart';
 import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:pilog_idqm/view/home/components/home_loading_shimmer.dart';
-import 'package:pilog_idqm/view/profile/image_screen.dart';
+import 'package:pilog_idqm/view/ocr.dart';
 import 'package:pilog_idqm/view/profile/profile.dart';
 import 'package:pilog_idqm/view/profile/settings.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
@@ -28,14 +29,14 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
       init: ClientMgrHomeController(),
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text('Client Manager'),
-            actions: [
-              IconButton(icon:Icon(Icons.ad_units) , onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(),));
-              },),
-            ],
-          ),
+          // appBar: AppBar(
+          //   title: Text('Client Manager'),
+          //   actions: [
+          //     IconButton(icon:Icon(Icons.ad_units) , onPressed: () {
+          //       Navigator.push(context, MaterialPageRoute(builder: (context) => CameraScreen(),));
+          //     },),
+          //   ],
+          // ),
           floatingActionButton: _buildFloatingButton(controller, context),
           body: _getSelectedPage(_selectedIndex, controller),
           bottomNavigationBar: WaterDropNavBar(
@@ -47,12 +48,9 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
             },
             selectedIndex: _selectedIndex,
             barItems: <BarItem>[
-            
               BarItem(
                 filledIcon: Icons.home,
-              
                 outlinedIcon: Icons.home_outlined,
-                
               ),
               BarItem(
                 filledIcon: Icons.person,
@@ -78,7 +76,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
       case 1:
         return ProfileScreen();
       case 2:
-        return  SettingsScreen();
+        return SettingsScreen();
       default:
         return _buildDataWidget(context, controller);
     }
@@ -108,81 +106,81 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                   return ListView(
                     children: snapshot.data.map<Widget>((item) {
                       return GestureDetector(
-                         onTap: () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => AssetDetailsScreen(
-                        //         wave: item.wave,
-                        //         entityName: item.entityName,
-                        //         tag: item.tag,
-                        //         asserTitle: item.asserTitle,
-                        //         assertDescription: item.assertDescription,
-                        //         fieldComments: item.fieldComments,
-                        //         floorLevel: item.floorLevel,
-                        //         floorLevelName: item.floorLevelName,
-                        //         locationPriority: item.locationPriority,
-                        //         omDepartment: item.omDepartment,
-                        //         pgGrade: item.pgGrade,
-                        //         pgGradeName: item.pgGradeName,
-                        //         recordNo: item.recordNo,
-                        //         complexName: item.complexName,
-                        //         spaceLocation: item.spaceLocation,
-                        //         spaceLocationName: item.spaceLocationName,
-                        //         areaId: item.areaId,
-                        //         areaName: item.areaName,
-                        //         asBuiltRef: item.asBuiltRef,
-                        //         assetQty: item.assetQty,
-                        //         assetVariantDescription:
-                        //             item.assetVariantDescription,
-                        //         astOrgId: item.astOrgId,
-                        //         cityId: item.cityId,
-                        //         cityName: item.cityName,
-                        //         clientQcBy: item.clientQcBy,
-                        //         clientQcCommets: item.clientQcCommets,
-                        //         clientQcDate: item.clientQcDate,
-                        //         clientQcStatus: item.clientQcStatus,
-                        //         districtId: item.districtId,
-                        //         districtName: item.districtId,
-                        //         drawingName: item.drawingName,
-                        //         drawingNumber: item.drawingNumber,
-                        //         drawingRev: item.drawingRev,
-                        //         drawingType: item.drawingType,
-                        //         existTagNumber: item.existTagNumber,
-                        //         functionalClassification:
-                        //             item.functionalClassification,
-                        //         geoLocation: item.geoLocation,
-                        //         geoMapLink: item.geoMapLink,
-                        //         gisLinkId: item.gisLinkId,
-                        //         gisLocator: item.gisLocator,
-                        //         internalQcBy: item.internalQcBy,
-                        //         internalQcDate: item.internalQcDate,
-                        //         manufacture: item.manufacture,
-                        //         manufactureYear: item.manufactureYear,
-                        //         model: item.model,
-                        //         orgName: item.orgName,
-                        //         pinNumber: item.pinNumber,
-                        //         regionId: item.regionId,
-                        //         regionName: item.regionName,
-                        //         sectionId: item.sectionId,
-                        //         sectionName: item.sectionName,
-                        //         submissionDATE: item.submissionDATE,
-                        //         submissionTo: item.submissionTo,
-                        //         surveyedBy: item.surveyedBy,
-                        //         surveyedDate: item.surveyedDate,
-                        //         uniClassCode: item.uniClassCode,
-                        //         uniClassSlCode: item.uniClassSlCode,
-                        //         uniClassSlTitle: item.uniClassSlTitle,
-                        //         uniClassTitle: item.uniClassTitle,
-                        //         uniEnCode: item.uniEnCode,
-                        //         uniEnTitle: item.uniEnTitle,
-                        //       ),
-                        //     ),
-                        //   );
+                        onTap: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => AssetDetailsScreen(
+                          //         wave: item.wave,
+                          //         entityName: item.entityName,
+                          //         tag: item.tag,
+                          //         asserTitle: item.asserTitle,
+                          //         assertDescription: item.assertDescription,
+                          //         fieldComments: item.fieldComments,
+                          //         floorLevel: item.floorLevel,
+                          //         floorLevelName: item.floorLevelName,
+                          //         locationPriority: item.locationPriority,
+                          //         omDepartment: item.omDepartment,
+                          //         pgGrade: item.pgGrade,
+                          //         pgGradeName: item.pgGradeName,
+                          //         recordNo: item.recordNo,
+                          //         complexName: item.complexName,
+                          //         spaceLocation: item.spaceLocation,
+                          //         spaceLocationName: item.spaceLocationName,
+                          //         areaId: item.areaId,
+                          //         areaName: item.areaName,
+                          //         asBuiltRef: item.asBuiltRef,
+                          //         assetQty: item.assetQty,
+                          //         assetVariantDescription:
+                          //             item.assetVariantDescription,
+                          //         astOrgId: item.astOrgId,
+                          //         cityId: item.cityId,
+                          //         cityName: item.cityName,
+                          //         clientQcBy: item.clientQcBy,
+                          //         clientQcCommets: item.clientQcCommets,
+                          //         clientQcDate: item.clientQcDate,
+                          //         clientQcStatus: item.clientQcStatus,
+                          //         districtId: item.districtId,
+                          //         districtName: item.districtId,
+                          //         drawingName: item.drawingName,
+                          //         drawingNumber: item.drawingNumber,
+                          //         drawingRev: item.drawingRev,
+                          //         drawingType: item.drawingType,
+                          //         existTagNumber: item.existTagNumber,
+                          //         functionalClassification:
+                          //             item.functionalClassification,
+                          //         geoLocation: item.geoLocation,
+                          //         geoMapLink: item.geoMapLink,
+                          //         gisLinkId: item.gisLinkId,
+                          //         gisLocator: item.gisLocator,
+                          //         internalQcBy: item.internalQcBy,
+                          //         internalQcDate: item.internalQcDate,
+                          //         manufacture: item.manufacture,
+                          //         manufactureYear: item.manufactureYear,
+                          //         model: item.model,
+                          //         orgName: item.orgName,
+                          //         pinNumber: item.pinNumber,
+                          //         regionId: item.regionId,
+                          //         regionName: item.regionName,
+                          //         sectionId: item.sectionId,
+                          //         sectionName: item.sectionName,
+                          //         submissionDATE: item.submissionDATE,
+                          //         submissionTo: item.submissionTo,
+                          //         surveyedBy: item.surveyedBy,
+                          //         surveyedDate: item.surveyedDate,
+                          //         uniClassCode: item.uniClassCode,
+                          //         uniClassSlCode: item.uniClassSlCode,
+                          //         uniClassSlTitle: item.uniClassSlTitle,
+                          //         uniClassTitle: item.uniClassTitle,
+                          //         uniEnCode: item.uniEnCode,
+                          //         uniEnTitle: item.uniEnTitle,
+                          //       ),
+                          //     ),
+                          //   );
                         },
                         child: DelayedDisplay(
-                          child: AssetDataCard(
-                           
+                          child: Column(
+                            children: [item],
                           ),
                         ),
                       );
@@ -218,28 +216,31 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
   Widget _buildFloatingButton(ClientMgrHomeController controller, context) {
     return FloatingActionBubble(
       items: <Bubble>[
+        Bubble(
+          title: "OCR",
+          iconColor: Colors.white,
+          bubbleColor: Colors.blue,
+          icon: Icons.document_scanner,
+          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>  UploadAndDownloadPdfScreen()
+                  //FilePickerPreviewWidget(apiUrl: "",authToken: false,),
+                ));
+          },
+        ),
         // Bubble(
-        //   title: "Parametric Search",
+        //   title: "Logout",
         //   iconColor: Colors.white,
-        //   bubbleColor: Colors.blue,
-        //   icon: Icons.search,
+        //   bubbleColor: Colors.red,
+        //   icon: Icons.logout,
         //   titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
         //   onPress: () {
-        //     // Navigator.push(
-        //     //     context,
-        //     //     MaterialPageRoute(
-        //     //       builder: (context) => ParametricSearchMgr(),
-        //     //     ));
+        //    // controller.onLogout(context);
         //   },
         // ),
-        Bubble(
-          title: "Logout",
-          iconColor: Colors.white,
-          bubbleColor: Colors.red,
-          icon: Icons.logout,
-          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
-          onPress:(){ controller.onLogout(context);},
-        ),
       ],
       animation: controller.animation,
       onPress: controller.toggleAnimation,
@@ -256,29 +257,17 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
         child: Stack(
           children: [
             // Shining moving border
-            AnimatedContainer(
-              duration: Duration(seconds: 2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blueAccent,
-                    Colors.greenAccent,
-                    Colors.blueAccent,
-                  ],
-                  stops: [0.0, 0.5, 1.0],
-                  begin: Alignment(-1, 0),
-                  end: Alignment(1, 0),
-                  tileMode: TileMode.mirror,
+            Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Card(elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
                 child: Container(
                   height: 56.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.grey.shade200,
+                    color: Colors.grey.shade200
                   ),
                 ),
               ),
@@ -289,7 +278,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                 controller.onTapSearch();
               },
               decoration: InputDecoration(
-                hintText: 'Search Based on Asset Type...',
+                hintText: 'Search...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                   borderSide: BorderSide.none,
