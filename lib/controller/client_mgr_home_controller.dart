@@ -90,9 +90,9 @@ class ClientMgrHomeController extends GetxController
     required int offset,
     required int rows,
   }) async {
- 
+    assetCardList.clear();
     String finalquery =
-        "UPPER (CLASS_TERM) LIKE UPPER ('$value') AND RECORD_NO IS NOT NULL OFFSET $offset ROWS FETCH NEXT $rows ROWS ONLY";
+        "UPPER (CLASS_TERM) LIKE UPPER ('$value') OR UPPER (BU_DH_CUST_COL53) LIKE UPPER ('$value') OR UPPER (RECORD_NO) LIKE UPPER ('$value') AND RECORD_NO IS NOT NULL OFFSET $offset ROWS FETCH NEXT $rows ROWS ONLY";
 
     // if (role == 'PM_FAR_IDAM_CLIENT_MGR') {
     //   reqid = "FEC608B8AA8BB026E0538400000AFD69";
@@ -124,6 +124,8 @@ class ClientMgrHomeController extends GetxController
             recordNo: object["RECORD_NO"],
             status: object["STATUS"],
             shortDescription: object["MASTER_COLUMN5"],
+            equipmentNumber: object["BU_DH_CUST_COL53"],
+            techId: object["REGISTER_COLUMN6"],
           ));
         }
         log("adataaaaaa ${result!['apiDataArray'][0]["RECORD_NO"]}");
@@ -285,8 +287,8 @@ class ClientMgrHomeController extends GetxController
 //delete image api
   Future<void> imageDeleteApi(
       String auditID, String recordNo, BuildContext context) async {
-        context.loaderOverlay.show();
-          
+    context.loaderOverlay.show();
+
     var dictParameter = {
       "apiReqId": "9B7DB8414A274A0EB1133E5FFF9F3BAC",
       "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
@@ -308,21 +310,23 @@ class ClientMgrHomeController extends GetxController
     );
 
     if (response != null && response.statusCode == 200) {
-         
       if (context.mounted) {
         ToastCustom.successToast(context, "Deleted Successfully");
-         context.loaderOverlay.hide();
+        context.loaderOverlay.hide();
         Navigator.pop(context);
       }
     } else {
-     if (context.mounted) {
+      if (context.mounted) {
         ToastCustom.errorToast(context, "Failed to delete");
-         context.loaderOverlay.hide();
+        context.loaderOverlay.hide();
         Navigator.pop(context);
       }
     }
-    
   }
+
+//parametric search 
+Future<void> parametricSearchApi(String auditID, BuildContext context) async {}
+
 
   //logout api
   Future<void> logoutAPI(

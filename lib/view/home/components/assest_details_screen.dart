@@ -22,6 +22,8 @@ class AssetDetailsScreen extends StatefulWidget {
   final String? longDesc;
   final String? status;
   final String? imageName;
+  final String? equipmentNo;
+  final String? techID;
 
   const AssetDetailsScreen(
       {Key? key,
@@ -30,7 +32,9 @@ class AssetDetailsScreen extends StatefulWidget {
       this.shortDescription,
       this.longDesc,
       this.status,
-      this.imageName})
+      this.imageName,
+      this.equipmentNo,
+      this.techID})
       : super(key: key);
 
   @override
@@ -194,7 +198,6 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                                                         [index]['AUDIT_ID'],
                                                     widget.recordNo!,
                                                     context);
-                                              
                                               },
                                             ),
                                           ),
@@ -292,6 +295,8 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                 ),
                 _buildDetailField("Class Term", widget.classTerm),
                 _buildDetailField("Record No", widget.recordNo),
+                _buildDetailField("Equipment No", widget.equipmentNo),
+                _buildDetailField("Tech ID", widget.techID),
                 _buildDetailField("Short Description", widget.shortDescription),
                 _buildDetailField("Long Description", widget.longDesc),
                 _buildDetailField("Status", widget.status),
