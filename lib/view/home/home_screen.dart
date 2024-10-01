@@ -102,7 +102,10 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: loadingShimmer());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  return const Center(
+                          child: Image(
+                              image:
+                                  AssetImage('assets/images/not_found.png')));
                 } else {
                   return ListView(
                     children: snapshot.data.map<Widget>((item) {

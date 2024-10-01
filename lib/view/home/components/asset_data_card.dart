@@ -9,6 +9,9 @@ class AssetDataCard extends StatefulWidget {
   final String? longDesc;
   final String? status;
   final String? imageName;
+  final String? equipmentNumber;
+  final String? techId;
+
 
   // final String? registerColumn8;
   // final String? registerColumn5;
@@ -43,7 +46,9 @@ class AssetDataCard extends StatefulWidget {
       this.classTerm,
       this.shortDescription,
       this.longDesc,
-      this.status, this.imageName
+      this.status,
+      this.imageName,
+      this.equipmentNumber, this.techId
 
       // this.registerColumn8,
       // this.registerColumn5,
@@ -90,7 +95,10 @@ class _AssetDataCardState extends State<AssetDataCard> {
                     longDesc: widget.longDesc,
                     recordNo: widget.recordNo,
                     shortDescription: widget.shortDescription,
-                    status: widget.status,imageName: widget.imageName,
+                    status: widget.status,
+                    imageName: widget.imageName,
+                    equipmentNo: widget.equipmentNumber,
+                    techID:widget.techId ,
                   ))),
       child: Column(
         children: [
@@ -102,7 +110,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
-           //   color: Color(0xff7165E3),
+              //   color: Color(0xff7165E3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -140,6 +148,8 @@ class _AssetDataCardState extends State<AssetDataCard> {
                       children: [
                         _buildInfoRow("RECORD NO", widget.recordNo),
                         SizedBox(height: 5),
+                        _buildInfoRow("EQUIPMENT NO", widget.equipmentNumber),
+                        SizedBox(height: 5),
                         _buildInfoRow("STATUS", widget.status),
                         //  SizedBox(height: 5),
                         // _buildInfoRow("CLASS_TERM	", widget.classTerm),
@@ -166,7 +176,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-            //  color: Color(0xffe8e7f4),
+              //  color: Color(0xffe8e7f4),
             ),
           ),
           Flexible(
@@ -176,7 +186,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
                 value ?? "",
                 style: TextStyle(
                   fontSize: 16,
-                //  color: Colors.white,
+                  //  color: Colors.white,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
