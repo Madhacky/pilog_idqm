@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/login_controller.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
 
@@ -15,38 +16,41 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 30),
-              Image(
-                height: 90,
-                image: AssetImage("assets/images/PiLog Logo.png"),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Welcome Back!',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+    return LoaderOverlay(
+      useDefaultLoading: true,
+      child: Scaffold(
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Column(  
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(height: 30),
+                Image(
+                  height: 90,
+                  image: AssetImage("assets/images/PiLog Logo.png"),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Please login to your account',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black54,
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome Back!',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
-              buildLoginForm(),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  'Please login to your account',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                buildLoginForm(),
+              ],
+            ),
           ),
         ),
       ),
@@ -79,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   Widget buildUserNameField() {
     return TextFormField(
+      
       keyboardType: TextInputType.text,
       onChanged: (value) {
         controller.userError.value = false;
@@ -157,10 +162,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return ElevatedButton(
       onPressed: () async {
         // Simple animation effect
+        
+        controller.signIn(context);
         Get.focusScope!.unfocus(); // Close the keyboard
-        Future.delayed(Duration(seconds: 1), () {
-          Get.to(ClientMgrHomeScreen());
-        });
+        
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(15),

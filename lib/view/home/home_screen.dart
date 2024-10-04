@@ -257,7 +257,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
           icon: Icons.logout,
           titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
           onPress: () {
-           // controller.onLogout(context);
+           controller.onLogout(context);
           },
         ),
       ],
