@@ -1,5 +1,6 @@
 import 'package:delayed_display/delayed_display.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -8,7 +9,8 @@ import 'package:pilog_idqm/view/home/components/ocr.dart';
 import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:pilog_idqm/view/home/components/home_loading_shimmer.dart';
-import 'package:pilog_idqm/view/home/components/parametric_screen.dart';
+import 'package:pilog_idqm/view/floc%20search/floc_opreation.dart';
+import 'package:pilog_idqm/view/parametric%20search/parametric_screen.dart';
 import 'package:pilog_idqm/view/ocr.dart';
 import 'package:pilog_idqm/view/profile/profile.dart';
 import 'package:pilog_idqm/view/profile/settings.dart';
@@ -103,9 +105,8 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                   return Center(child: loadingShimmer());
                 } else if (snapshot.hasError) {
                   return const Center(
-                          child: Image(
-                              image:
-                                  AssetImage('assets/images/not_found.png')));
+                      child: Image(
+                          image: AssetImage('assets/images/not_found.png')));
                 } else {
                   return ListView(
                     children: snapshot.data.map<Widget>((item) {
@@ -220,22 +221,22 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
   Widget _buildFloatingButton(ClientMgrHomeController controller, context) {
     return FloatingActionBubble(
       items: <Bubble>[
+        // Bubble(
+        //   title: "OCR",
+        //   iconColor: Colors.white,
+        //   bubbleColor: Colors.blue,
+        //   icon: Icons.document_scanner,
+        //   titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
+        //   onPress: () {
+        //     Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (context) => UploadAndDownloadPdfScreen()
+        //             //FilePickerPreviewWidget(apiUrl: "",authToken: false,),
+        //             ));
+        //   },
+        // ),
         Bubble(
-          title: "OCR",
-          iconColor: Colors.white,
-          bubbleColor: Colors.blue,
-          icon: Icons.document_scanner,
-          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
-          onPress: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>  UploadAndDownloadPdfScreen()
-                  //FilePickerPreviewWidget(apiUrl: "",authToken: false,),
-                ));
-          },
-        ),
-         Bubble(
           title: "Paramatric Screen",
           iconColor: Colors.white,
           bubbleColor: Colors.blue,
@@ -244,10 +245,21 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
           onPress: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) =>  ParametricSearchScreen(),
-                  //FilePickerPreviewWidget(apiUrl: "",authToken: false,),
-                ));
+                CupertinoPageRoute<bool>(
+                    builder: (_) => ParametricSearchScreen()));
+          },
+        ),
+        Bubble(
+          title: "FLOC Search",
+          iconColor: Colors.white,
+          bubbleColor: Colors.blue,
+          icon: Icons.location_city_rounded,
+          titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
+          onPress: () {
+            Navigator.push(
+                context,
+                CupertinoPageRoute<bool>(
+                    builder: (_) => const FLOCOperation()));
           },
         ),
         Bubble(
@@ -278,16 +290,16 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
             // Shining moving border
             Padding(
               padding: const EdgeInsets.all(2.0),
-              child: Card(elevation: 2,
+              child: Card(
+                elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: Container(
                   height: 56.0,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: Colors.grey.shade200
-                  ),
+                      borderRadius: BorderRadius.circular(5.0),
+                      color: Colors.grey.shade200),
                 ),
               ),
             ),
