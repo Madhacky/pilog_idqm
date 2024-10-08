@@ -12,6 +12,7 @@ import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/global/app_styles.dart';
 import 'package:pilog_idqm/global/widgets/common_shimmer.dart';
+import 'package:pilog_idqm/view/home/components/location_screen.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter/cupertino.dart'; // Ensure you have this import
 
@@ -109,17 +110,21 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         ),
         backgroundColor: Colors.transparent,
         actions: [
-          //  Padding(
-          //   padding: const EdgeInsets.only(right: 16),
-          //   child: IconButton(
-          //     onPressed: _showSelectedImage,
-          //     icon: Icon(
-          //       Icons.image,
-          //       size: 30,
-          //     ),
-          //   ),
-          // ),
-
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LocationScreen(onLocationSelected: (double latitude, double longitude) {  },)));
+              },
+              icon: Icon(
+                Icons.image,
+                size: 30,
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: IconButton(

@@ -6,7 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -28,6 +31,75 @@ class ClientMgrHomeController extends GetxController
 
   // Text editing controller
   TextEditingController searchController = TextEditingController();
+  var latitude = 0.0.obs;
+  var longitude = 0.0.obs;
+  var area = ''.obs;
+  var country = ''.obs;
+  var city = ''.obs;
+
+  late GoogleMapController googleMapController;
+
+  // Get current location and permissions
+  Future<void> getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled');
+    }
+
+    // Check and request permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get current position
+    var position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    // Get placemark information
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = placemarks.first;
+
+    // Update state
+    latitude.value = position.latitude;
+    longitude.value = position.longitude;
+    area.value = place.subLocality ?? '';
+    country.value = place.country ?? '';
+    city.value = place.locality ?? '';
+  }
+
+  // Method to set GoogleMapController
+  void setGoogleMapController(GoogleMapController controller) {
+    googleMapController = controller;
+  }
+
+  // Method to animate the camera to a new position
+  void animateCameraTo(LatLng position, double zoom) {
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: position, zoom: zoom),
+      ),
+    );
+  }
+
+  // Update marker position when dragged
+  void updateMarkerPosition(LatLng newPosition) {
+    latitude.value = newPosition.latitude;
+    longitude.value = newPosition.longitude;
+  }
 
   // Bools
   RxBool isAssetDataLoaded = RxBool(false);
