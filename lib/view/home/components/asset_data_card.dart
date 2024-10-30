@@ -11,6 +11,8 @@ class AssetDataCard extends StatefulWidget {
   final String? imageName;
   final String? equipmentNumber;
   final String? techId;
+  final String? lat;
+  final String? long;
 
 
   // final String? registerColumn8;
@@ -48,7 +50,7 @@ class AssetDataCard extends StatefulWidget {
       this.longDesc,
       this.status,
       this.imageName,
-      this.equipmentNumber, this.techId
+      this.equipmentNumber, this.techId, this.lat, this.long
 
       // this.registerColumn8,
       // this.registerColumn5,
@@ -99,6 +101,9 @@ class _AssetDataCardState extends State<AssetDataCard> {
                     imageName: widget.imageName,
                     equipmentNo: widget.equipmentNumber,
                     techID:widget.techId ,
+                    lat: widget.lat,
+                    lng: widget.long,
+
                   ))),
       child: Column(
         children: [

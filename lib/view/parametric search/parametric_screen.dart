@@ -19,15 +19,7 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
       appBar: AppBar(
         title: Text("Parametric Search"),
         backgroundColor: Color(0xff7165E3),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Get.to(() => FLOCOperation(
-                     
-                    ));
-              },
-              icon: Icon(Icons.data_object))
-        ],
+       
       ),
       body: SingleChildScrollView(
         child: Padding(

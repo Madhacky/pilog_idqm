@@ -49,7 +49,7 @@ class ToastCustom {
       type: ToastificationType.success,
       style: ToastificationStyle.flatColored,
       autoCloseDuration: const Duration(seconds: 3),
-      title: const Text('Sucessfully'),
+      title: const Text('Sucessfull'),
       description: RichText(
           text: TextSpan(text: message, style: AppStyles.black_14_400)),
       alignment: Alignment.topRight,

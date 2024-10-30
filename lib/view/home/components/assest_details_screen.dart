@@ -25,6 +25,8 @@ class AssetDetailsScreen extends StatefulWidget {
   final String? imageName;
   final String? equipmentNo;
   final String? techID;
+  final String? lat;
+  final String? lng;
 
   const AssetDetailsScreen(
       {Key? key,
@@ -35,7 +37,9 @@ class AssetDetailsScreen extends StatefulWidget {
       this.status,
       this.imageName,
       this.equipmentNo,
-      this.techID})
+      this.techID,
+      this.lat,
+      this.lng})
       : super(key: key);
 
   @override
@@ -76,7 +80,8 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         setState(() {
           _image = croppedImage;
         });
-        await home_controller.uploadImageApi(_image, widget.recordNo!, context);
+        await home_controller.uploadImageApi(
+            _image, widget.recordNo!, context, true);
       }
     }
   }
@@ -99,6 +104,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
     return null;
   }
 
+  String? image;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,16 +117,26 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         backgroundColor: Colors.transparent,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.only(right: 1),
             child: IconButton(
               onPressed: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LocationScreen(onLocationSelected: (double latitude, double longitude) {  },)));
+                        builder: (context) => LocationScreen(
+                              onLocationSelected:
+                                  (double latitude, double longitude) {},
+                              assetName: widget.classTerm,
+                              equipmentNo: widget.equipmentNo,
+                              base64Image: image,
+                              lat: widget.lat,
+                              long: widget.lng,
+                              recordNo: widget.recordNo,
+                              status: widget.status,
+                            )));
               },
-              icon: Icon(
-                Icons.image,
+              icon: const Icon(
+                Icons.location_on,
                 size: 30,
               ),
             ),
@@ -128,9 +144,61 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: IconButton(
-              onPressed: () => _takePicture(),
-              icon: Icon(
-                Icons.add_a_photo_outlined,
+              onPressed: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => CupertinoActionSheet(
+                    title: const Text('Select Option'),
+                    actions: [
+                      CupertinoActionSheetAction(
+                        onPressed: () {
+                          _takePicture();
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.image),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Add Image',
+                              style: AppStyles.black_15_400,
+                            ),
+                          ],
+                        ),
+                      ),
+                      CupertinoActionSheetAction(
+                        onPressed: () {
+                          home_controller.pickPdfUnder4MB(
+                              context, widget.recordNo!);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.picture_as_pdf),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Add PDF',
+                              style: AppStyles.black_15_400,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.attach_file_rounded,
                 size: 30,
               ),
             ),
@@ -161,16 +229,18 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData ||
                         (snapshot.data as Map)['apiDataArray'].isEmpty) {
-                      return Center(child: Text('No image available'));
+                      return const Center(child: Text('No image available'));
                     } else {
                       var imageData = (snapshot.data as Map);
+                      image = imageData['apiDataArray'][0]['CONTENT'];
                       return GridView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: imageData['apiDataArray'].length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          crossAxisSpacing: 10,
+                          crossAxisSpacing: 20,
                           mainAxisSpacing: 10,
                         ),
                         itemBuilder: (context, index) {
@@ -182,7 +252,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                                 builder: (BuildContext context) {
                                   return CupertinoPopupSurface(
                                     child: Container(
-                                      padding: EdgeInsets.all(
+                                      padding: const EdgeInsets.all(
                                           16), // Increase padding for the popup
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
@@ -206,11 +276,11 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                                               },
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                               height:
                                                   8), // Add spacing between buttons
                                           CupertinoButton(
-                                            child: Text(
+                                            child: const Text(
                                               'Cancel',
                                               style: TextStyle(
                                                   fontSize:
@@ -229,64 +299,50 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                               );
                             },
                             onTap: () {
-                              // Open modal bottom sheet with zoomable image
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          imageData['apiDataArray'][index]
-                                                  ['FILE_NAME'] ??
-                                              'No name',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: PhotoView(
-                                          enablePanAlways: true,
-                                          imageProvider: MemoryImage(
-                                            base64Decode(
-                                                imageData['apiDataArray'][index]
-                                                    ['CONTENT']),
-                                          ),
-                                          backgroundDecoration: BoxDecoration(
-                                            color: Colors.black,
-                                          ),
-                                          minScale:
-                                              PhotoViewComputedScale.contained,
-                                          maxScale:
-                                              PhotoViewComputedScale.covered *
-                                                  2,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              home_controller.isImageOrPdf(
+                                      imageData['apiDataArray'][index]
+                                          ['CONTENT'])
+                                  ? home_controller.showImages(
+                                      context,
+                                      imageData['apiDataArray'][index]
+                                          ['CONTENT'],
+                                      imageData['apiDataArray'][index]
+                                              ['FILE_NAME'] ??
+                                          'No name',
+                                    )
+                                  : home_controller.showPDF(
+                                      context,
+                                      imageData['apiDataArray'][index]
+                                          ['CONTENT'],
+                                      imageData['apiDataArray'][index]
+                                              ['FILE_NAME'] ??
+                                          'No name',
+                                    );
                             },
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppColors.ashGrey),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                    const BorderRadius.all(Radius.circular(10)),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
-                                child: Image.memory(
-                                  base64Decode(imageData['apiDataArray'][index]
-                                      ['CONTENT']),
-                                  fit: BoxFit.fill,
-                                  height: 50,
-                                  width: 50,
-                                ),
+                                child: home_controller.isImageOrPdf(
+                                        imageData['apiDataArray'][index]
+                                            ['CONTENT'])
+                                    ? Image.memory(
+                                        base64Decode(imageData['apiDataArray']
+                                            [index]['CONTENT']),
+                                        fit: BoxFit.fill,
+                                        height: 30,
+                                        width: 30,
+                                      )
+                                    : Image.asset(
+                                        "assets/images/pdf_image.png",
+                                        fit: BoxFit.fill,
+                                        height: 30,
+                                        width: 30,
+                                      ),
                               ),
                             ),
                           );
@@ -333,6 +389,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
           child: TextFormField(
             enabled: false,
             initialValue: value ?? '',
+            style: const TextStyle(color: Colors.black87),
             maxLines: null, // This allows the text field to grow as needed
             minLines: 1, // The minimum number of lines to display
             decoration: InputDecoration(
@@ -356,12 +413,12 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         children: [
           Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           TextField(
             controller: clientQcCommentsController,
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               hintText: label,
             ),
           ),
