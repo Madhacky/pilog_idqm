@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -369,7 +368,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
     );
   }
 
-  Widget _buildDetailField(String label, String? value) {
+  Widget _buildDetailField(String? label, String? value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -378,7 +377,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
-                label,
+                label ?? "",
                 style: AppStyles.black_15_600,
               ),
             ),
@@ -387,6 +386,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: TextFormField(
+            style: AppStyles.black_15_400,
             enabled: false,
             initialValue: value ?? '',
             style: const TextStyle(color: Colors.black87),
@@ -413,13 +413,14 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.absoluteBlack),
           ),
           TextField(
             controller: clientQcCommentsController,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               hintText: label,
+              hintStyle: TextStyle(color: AppColors.absoluteBlack)
             ),
           ),
         ],
@@ -449,7 +450,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
             child: Padding(
               padding: const EdgeInsets.all(6.0),
               child: Container(
-                color: Colors.grey, // Placeholder color
+                color: Colors.grey, 
                 height: 50,
                 width: 50,
               ),

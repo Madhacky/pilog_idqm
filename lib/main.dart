@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/helpers/init_services.dart';
@@ -44,7 +43,7 @@ class MyApp extends StatelessWidget {
                   ),
                 );
               },
-              child: SplashScreen()),
+              child: const SplashScreen()),
         ),
       ),
     );
