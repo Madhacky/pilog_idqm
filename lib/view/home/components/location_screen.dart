@@ -74,7 +74,7 @@ class _LocationScreenState extends State<LocationScreen> {
       ..strokeWidth = borderWidth;
 
     if (isShining) {
-      paint.maskFilter = MaskFilter.blur(BlurStyle.outer, 7);
+      paint.maskFilter = const MaskFilter.blur(BlurStyle.outer, 7);
     }
 
     final size = Size(image.width.toDouble(), image.height.toDouble());
@@ -103,9 +103,9 @@ class _LocationScreenState extends State<LocationScreen> {
       normalMarker = BitmapDescriptor.fromBytes(normalImageBytes);
       shiningMarker = BitmapDescriptor.fromBytes(shiningImageBytes);
     } else {
-      normalMarker = await BitmapDescriptor.defaultMarkerWithHue(
+      normalMarker = BitmapDescriptor.defaultMarkerWithHue(
           BitmapDescriptor.hueGreen);
-      shiningMarker = await BitmapDescriptor.defaultMarkerWithHue(
+      shiningMarker = BitmapDescriptor.defaultMarkerWithHue(
           BitmapDescriptor.hueGreen);
     }
 
@@ -115,7 +115,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void _startBlinking() {
-    _timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       setState(() {
         isShining = !isShining;
       });
@@ -135,7 +135,7 @@ class _LocationScreenState extends State<LocationScreen> {
     } else {
       // Handle the case where the URL can't be launched
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not open Google Maps')),
+        const SnackBar(content: Text('Could not open Google Maps')),
       );
     }
   }
@@ -274,7 +274,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10), // Add some space between buttons
+                const SizedBox(width: 10), // Add some space between buttons
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _openGoogleMapsDirections,

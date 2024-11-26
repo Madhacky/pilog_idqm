@@ -15,7 +15,7 @@ class SearchableDropdown extends StatefulWidget {
   final bool isRequired;
 
   SearchableDropdown({
-    Key? key,
+    super.key,
     required this.isItemLoaded,
     this.searchBoxHintText,
     this.prefixIcon,
@@ -25,7 +25,7 @@ class SearchableDropdown extends StatefulWidget {
     this.validator,
     required this.onChanged,
     required this.isRequired,
-  }) : super(key: key);
+  });
 
   @override
   State<SearchableDropdown> createState() => _SearchableDropdownState();
@@ -56,7 +56,7 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
                     showSearchBox: true,
                     showSelectedItems: true,
                     menuProps: MenuProps(
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(15),
                           bottomRight: Radius.circular(15),
@@ -76,7 +76,7 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
                       prefixIcon: widget.prefixIcon,
                       suffixIcon: widget.isItemLoaded.value
                           ? Icon(Icons.arrow_drop_down, color: isDarkMode ? Colors.white70 : AppColors.appColor)
-                          : SizedBox(
+                          : const SizedBox(
                               width: 16,
                               height: 16,
                               child: CircularProgressIndicator(
@@ -85,7 +85,7 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
                               ),
                             ),
                       hintStyle: TextStyle(
-                          color: isDarkMode ? Colors.white70 : Color(0xFF6CA8F1)),
+                          color: isDarkMode ? Colors.white70 : const Color(0xFF6CA8F1)),
                       disabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
                         borderSide: BorderSide(

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
-import 'package:pilog_idqm/view/login_screen.dart';
+import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
+import 'package:pilog_idqm/view/onboard%20screens/on_boarding.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -48,11 +49,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       isLoggedIn
           ? Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ClientMgrHomeScreen()),
+              MaterialPageRoute(builder: (context) => const ClientMgrHomeScreen()),
             )
           : Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
+              MaterialPageRoute(builder: (context) =>  OnboardingScreen()),
             );
     }
   }
@@ -73,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             FadeTransition(
               opacity: _animation,
               child: const Text(
-                'Pilog IDQM',
+                'iDQM',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

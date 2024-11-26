@@ -1,10 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pilog_idqm/global/app_styles.dart';
+import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    getUserDetails();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  String? userName;
+  String? instance;
+  String? role;
+  String? region;
+
+  RxList<String?> allResults = RxList();
+  Future getUserDetails() async {
+    // userName = await SharedPreferencesHelper.getUsername();
+    // instance = await SharedPreferencesHelper.getInstance();
+    // role = await SharedPreferencesHelper.getRole();
+    // region = await SharedPreferencesHelper.getRegion();
+    allResults.value = await Future.wait([
+      SharedPreferencesHelper.getUsername(),
+      SharedPreferencesHelper.getInstance(),
+      SharedPreferencesHelper.getRole(),
+      SharedPreferencesHelper.getRegion()
+    ]);
+
+    userName = allResults[0];
+    instance = allResults[1];
+    role = allResults[2];
+    region = allResults[3];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xff7165E3),
@@ -12,103 +53,95 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           'Profile',
-          style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: Colors.white, fontSize: 22, fontWeight: FontWeight.w600),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10,
-            ),
-            Container(
+      body:Obx(()=>allResults.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Stack(
-                    children: [
-                      const CircleAvatar(
-                        radius: 60,
-                        backgroundColor: Color(0xff7165E3),
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 110,
-                        ),
-                      ),                     
-                    ],
+                  const SizedBox(
+                    height: 10,
                   ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'AJAY_IDAM_CLIENT_MGR',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Color(0xff7165E3),
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 110,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          userName!,
+                          style: AppStyles.black_22_600,
+                        ),
+                      ],
                     ),
                   ),
+                  const SizedBox(height: 50),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        ProfileInfoRow(
+                          icon: Icons.location_on,
+                          label: 'Region',
+                          value: region!,
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.language,
+                          label: 'Locale',
+                          value: 'en_US',
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.person,
+                          label: 'Username',
+                          value: userName!,
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.settings_applications,
+                          label: 'Instance',
+                          value: instance!,
+                        ),
+                        ProfileInfoRow(
+                          icon: Icons.work,
+                          label: 'Role',
+                          value: role!,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  ProfileInfoRow(
-                    icon: Icons.location_on,
-                    label: 'Location',
-                    value: 'IN',
-                  ),
-                  ProfileInfoRow(
-                    icon: Icons.language,
-                    label: 'Locale',
-                    value: 'en_US',
-                  ),
-                  ProfileInfoRow(
-                    icon: Icons.business,
-                    label: 'Organization',
-                    value: 'RCJY',
-                  ),
-                  ProfileInfoRow(
-                    icon: Icons.account_box,
-                    label: 'Org ID',
-                    value: 'C1F5CFB03F2E444DAE78ECCEAD80D27D',
-                  ),
-                  ProfileInfoRow(
-                    icon: Icons.person,
-                    label: 'Username',
-                    value: 'AJAY_IDAM_CLIENT_MGR',
-                  ),
-                  ProfileInfoRow(
-                    icon: Icons.settings_applications,
-                    label: 'Instance',
-                    value: '100',
-                  ),
-                  ProfileInfoRow(
-                    icon: Icons.work,
-                    label: 'Role',
-                    value: 'PM_FAR_IDAM_CLIENT_MGR',
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
-      ),
+            ),), 
     );
   }
 }
@@ -118,7 +151,8 @@ class ProfileInfoRow extends StatelessWidget {
   final String label;
   final String value;
 
-  ProfileInfoRow({required this.icon, required this.label, required this.value});
+  const ProfileInfoRow(
+      {super.key, required this.icon, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +174,10 @@ class ProfileInfoRow extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   value,
-                  style: const TextStyle(fontSize: 16, color: Colors.black87, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),

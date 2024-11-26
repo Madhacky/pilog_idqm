@@ -151,46 +151,37 @@ TextEditingController get  barcodeScannerController =>  _barcodeController;
     finalQuery = "";
     whereConditions.clear();
     whereClause = '1';
-    if ({mdrmTextController.text} != null && {mdrmTextController.text} != "") {
-      if (!(selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "")) {
+    if ({mdrmTextController.text} != "") {
+      if (!(selectedMdrmOperator.value != "")) {
         whereConditions.add(
             "  UPPER(RECORD_NO)  LIKE  UPPER( '%${mdrmTextController.text}%')");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "LIKE") {
         whereConditions.add(
             "  UPPER(RECORD_NO) $selectedMdrmOperator.value  UPPER( '%${mdrmTextController.text}%')");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "NOT LIKE") {
         whereConditions.add(
             "  UPPER(RECORD_NO) $selectedMdrmOperator.value  UPPER( '%${mdrmTextController.text}%')");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "=") {
         whereConditions.add(
             "  UPPER(RECORD_NO) $selectedMdrmOperator.value  UPPER( '${mdrmTextController.text}')");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "Beginning With") {
         whereConditions.add(
             "  UPPER(RECORD_NO) LIKE  UPPER( '${mdrmTextController.text}%')");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "Ending With") {
         whereConditions.add(
             "  UPPER(RECORD_NO) LIKE  UPPER( '%${mdrmTextController.text}')");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "IS") {
         whereConditions.add("  UPPER(RECORD_NO) IS NULL");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(RECORD_NO) IS NOT NULL");
-      } else if (selectedMdrmOperator.value != null &&
-          selectedMdrmOperator.value != "" &&
+      } else if (selectedMdrmOperator.value != "" &&
           selectedMdrmOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(RECORD_NO) IS NOT NULL");
       } else {
@@ -198,47 +189,37 @@ TextEditingController get  barcodeScannerController =>  _barcodeController;
             "  UPPER(RECORD_NO) $selectedMdrmOperator.value  UPPER( '${mdrmTextController.text}')");
       }
     }
-    if ({equipmentTextController.text} != null &&
-        {equipmentTextController.text} != "") {
-      if (!(selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "")) {
+    if ({equipmentTextController.text} != "") {
+      if (!(selectedEquipmentOperator.value != "")) {
         whereConditions.add(
             "  UPPER(BU_DH_CUST_COL53)  LIKE  UPPER( '%${equipmentTextController.text}%')");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "LIKE") {
         whereConditions.add(
             "  UPPER(BU_DH_CUST_COL53) $selectedEquipmentOperator.value  UPPER( '%${equipmentTextController.text}%')");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "NOT LIKE") {
         whereConditions.add(
             "  UPPER(BU_DH_CUST_COL53) $selectedEquipmentOperator.value  UPPER( '%${equipmentTextController.text}%')");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "=") {
         whereConditions.add(
             "  UPPER(BU_DH_CUST_COL53) $selectedEquipmentOperator.value  UPPER( '${equipmentTextController.text}')");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "Beginning With") {
         whereConditions.add(
             "  UPPER(BU_DH_CUST_COL53) LIKE  UPPER( '${equipmentTextController.text}%')");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "Ending With") {
         whereConditions.add(
             "  UPPER(BU_DH_CUST_COL53) LIKE  UPPER( '%${equipmentTextController.text}')");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "IS") {
         whereConditions.add("  UPPER(BU_DH_CUST_COL53) IS NULL");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(BU_DH_CUST_COL53) IS NOT NULL");
-      } else if (selectedEquipmentOperator.value != null &&
-          selectedEquipmentOperator.value != "" &&
+      } else if (selectedEquipmentOperator.value != "" &&
           selectedEquipmentOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(BU_DH_CUST_COL53) IS NOT NULL");
       } else {
@@ -246,47 +227,37 @@ TextEditingController get  barcodeScannerController =>  _barcodeController;
             "  UPPER(BU_DH_CUST_COL53) $selectedEquipmentOperator.value  UPPER( '${equipmentTextController.text}')");
       }
     }
-    if ({techIDTextController.text} != null &&
-        {techIDTextController.text} != "") {
-      if (!(selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "")) {
+    if ({techIDTextController.text} != "") {
+      if (!(selectedTechIDOperator.value != "")) {
         whereConditions.add(
             "  UPPER(REGISTER_COLUMN6)  LIKE  UPPER( '%${techIDTextController.text}%')");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "LIKE") {
         whereConditions.add(
             "  UPPER(REGISTER_COLUMN6) $selectedTechIDOperator.value  UPPER( '%${techIDTextController.text}%')");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "NOT LIKE") {
         whereConditions.add(
             "  UPPER(REGISTER_COLUMN6) $selectedTechIDOperator.value  UPPER( '%${techIDTextController.text}%')");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "=") {
         whereConditions.add(
             "  UPPER(REGISTER_COLUMN6) $selectedTechIDOperator.value  UPPER( '${techIDTextController.text}')");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "Beginning With") {
         whereConditions.add(
             "  UPPER(REGISTER_COLUMN6) LIKE  UPPER( '${techIDTextController.text}%')");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "Ending With") {
         whereConditions.add(
             "  UPPER(REGISTER_COLUMN6) LIKE  UPPER( '%${techIDTextController.text}')");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "IS") {
         whereConditions.add("  UPPER(REGISTER_COLUMN6) IS NULL");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(REGISTER_COLUMN6) IS NOT NULL");
-      } else if (selectedTechIDOperator.value != null &&
-          selectedTechIDOperator.value != "" &&
+      } else if (selectedTechIDOperator.value != "" &&
           selectedTechIDOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(REGISTER_COLUMN6) IS NOT NULL");
       } else {
@@ -294,46 +265,37 @@ TextEditingController get  barcodeScannerController =>  _barcodeController;
             "  UPPER(REGISTER_COLUMN6) $selectedTechIDOperator.value  UPPER( '${techIDTextController.text}')");
       }
     }
-    if ({flocTextController.text} != null && {flocTextController.text} != "") {
-      if (!(selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "")) {
+    if ({flocTextController.text} != "") {
+      if (!(selectedFLOCOperator.value != "")) {
         whereConditions
             .add("  UPPER(FLOC)  LIKE  UPPER( '%${flocTextController.text}%')");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "LIKE") {
         whereConditions.add(
             "  UPPER(FLOC) $selectedFLOCOperator.value  UPPER( '%${flocTextController.text}%')");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "NOT LIKE") {
         whereConditions.add(
             "  UPPER(FLOC) $selectedFLOCOperator.value  UPPER( '%${flocTextController.text}%')");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "=") {
         whereConditions.add(
             "  UPPER(FLOC) $selectedFLOCOperator.value  UPPER( '${flocTextController.text}')");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "Beginning With") {
         whereConditions
             .add("  UPPER(FLOC) LIKE  UPPER( '${flocTextController.text}%')");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "Ending With") {
         whereConditions
             .add("  UPPER(FLOC) LIKE  UPPER( '%${flocTextController.text}')");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "IS") {
         whereConditions.add("  UPPER(FLOC) IS NULL");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(FLOC) IS NOT NULL");
-      } else if (selectedFLOCOperator.value != null &&
-          selectedFLOCOperator.value != "" &&
+      } else if (selectedFLOCOperator.value != "" &&
           selectedFLOCOperator.value == "IS NOT") {
         whereConditions.add("  UPPER(FLOC) IS NOT NULL");
       } else {

@@ -42,8 +42,8 @@ class AssetDataCard extends StatefulWidget {
   // final String? orgnId;
   // final String? materialNumber;
 
-  AssetDataCard(
-      {Key? key,
+  const AssetDataCard(
+      {super.key,
       this.recordNo,
       this.classTerm,
       this.shortDescription,
@@ -78,8 +78,7 @@ class AssetDataCard extends StatefulWidget {
       // this.objectNumber,
       // this.orgnId,
       // this.materialNumber,
-      })
-      : super(key: key);
+      });
 
   @override
   State<AssetDataCard> createState() => _AssetDataCardState();
@@ -152,9 +151,9 @@ class _AssetDataCardState extends State<AssetDataCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildInfoRow("RECORD NO", widget.recordNo),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         _buildInfoRow("EQUIPMENT NO", widget.equipmentNumber),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         _buildInfoRow("STATUS", widget.status),
                         //  SizedBox(height: 5),
                         // _buildInfoRow("CLASS_TERM	", widget.classTerm),
@@ -178,7 +177,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
         children: [
           Text(
             "$label: ",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
               //  color: Color(0xffe8e7f4),
@@ -189,7 +188,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
               message: value ?? "",
               child: Text(
                 value ?? "",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   //  color: Colors.white,
                 ),

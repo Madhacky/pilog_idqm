@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/helpers/api_services.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
@@ -13,12 +10,18 @@ import 'package:pilog_idqm/model/login_model.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
 
 class LoginController extends GetxController {
+  static late String host_url;
+  @override
+  void onInit() {
+    super.onInit();
+    host_url = dotenv.get("HOST_URL");
+  }
+
   final userNameText = TextEditingController();
   final passWordText = TextEditingController();
   final userError = false.obs;
   final passError = false.obs;
-final isLoading = false.obs; 
-  var box;
+  final isLoading = false.obs;
 
   LoginController();
 
@@ -32,7 +35,7 @@ final isLoading = false.obs;
     LoginResponse? userLoginModel;
     try {
       final response = await ApiServices().requestPostForApi(
-        url: "https://kaartech.pilogcloud.com/AR1024228API/appUserLogin",
+        url: "${host_url}appUserLogin",
         dictParameter: {
           "rsUsername": userName.toUpperCase(),
           "rsPassword": passWord,
@@ -47,22 +50,23 @@ final isLoading = false.obs;
         userLoginModel = LoginResponse.fromJson(response.data);
         await SharedPreferencesHelper.setIsLoggedIn(true);
         await SharedPreferencesHelper.setUsername(userLoginModel.ssUsername);
-
         await SharedPreferencesHelper.setRole(userLoginModel.ssRole);
+        await SharedPreferencesHelper.setRegion(userLoginModel.ssRegion);
+        await SharedPreferencesHelper.setInstance(userLoginModel.ssInstance);
+
+
 
         if (context.mounted) {
           context.loaderOverlay.hide();
+          ToastCustom.successToast(
+              context, "Welcome ${userLoginModel.ssUsername}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ClientMgrHomeScreen(),
+            ),
+          );
         }
-
-        ToastCustom.successToast(
-            context, "Welcome ${userLoginModel.ssUsername}");
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ClientMgrHomeScreen(),
-          ),
-        );
       } else {
         if (context.mounted) {
           ToastCustom.errorToast(context, "Error occurred, try again later!!");

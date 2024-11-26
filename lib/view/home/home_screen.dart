@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:delayed_display/delayed_display.dart';
 import 'package:floating_action_bubble/floating_action_bubble.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,13 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
-import 'package:pilog_idqm/view/home/components/ocr.dart';
-import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
-import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
+import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/view/home/components/home_loading_shimmer.dart';
 import 'package:pilog_idqm/view/floc%20search/floc_opreation.dart';
 import 'package:pilog_idqm/view/parametric%20search/parametric_screen.dart';
-import 'package:pilog_idqm/view/ocr.dart';
 import 'package:pilog_idqm/view/profile/profile.dart';
 import 'package:pilog_idqm/view/profile/settings.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
@@ -84,141 +83,79 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
         return _buildDataWidget(context, controller);
     }
   }
+Widget _buildDataWidget(
+    BuildContext context, ClientMgrHomeController controller) {
+  // Detect device size and platform
+  bool isTablet = (MediaQuery.of(context).size.shortestSide > 600) && (Platform.isIOS || Platform.isAndroid);
 
-  Widget _buildDataWidget(
-      BuildContext context, ClientMgrHomeController controller) {
-    return Scaffold(
+  return PopScope(
+     canPop: false,
+    child: Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
         actions: [_buildSearchBar(controller)],
       ),
-      body: Obx(() => controller.isAssetDataLoaded.value
-          ? FutureBuilder(
-              future: controller.getAssetdataFuture,
-              initialData: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.30,
-                child: Lottie.asset('assets/images/welcome.json'),
-              ),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: loadingShimmer());
-                } else if (snapshot.hasError) {
-                  return const Center(
-                      child: Image(
-                          image: AssetImage('assets/images/not_found.png')));
-                } else {  
-                  return ListView(
-                      children: snapshot.data.map<Widget>((item) {
-                        return GestureDetector(
-                          onTap: () {
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => AssetDetailsScreen(
-                          //         wave: item.wave,
-                          //         entityName: item.entityName,
-                          //         tag: item.tag,
-                          //         asserTitle: item.asserTitle,
-                          //         assertDescription: item.a
-                          // ssertDescription,
-                          //         fieldComments: item.fieldComments,
-                          //         floorLevel: item.floorLevel,
-                          //         floorLevelName: item.floorLevelName,
-                          //         locationPriority: item.locationPriority,
-                          //         omDepartment: item.omDepartment,
-                          //         pgGrade: item.pgGrade,
-                          //         pgGradeName: item.pgGradeName,
-                          //         recordNo: item.recordNo,
-                          //         complexName: item.complexName,
-                          //         spaceLocation: item.spaceLocation,
-                          //         spaceLocationName: item.spaceLocationName,
-                          //         areaId: item.areaId,
-                          //         areaName: item.areaName,
-                          //         asBuiltRef: item.asBuiltRef,
-                          //         assetQty: item.assetQty,
-                          //         assetVariantDescription:
-                          //             item.assetVariantDescription,
-                          //         astOrgId: item.astOrgId,
-                          //         cityId: item.cityId,
-                          //         cityName: item.cityName,
-                          //         clientQcBy: item.clientQcBy,
-                          //         clientQcCommets: item.clientQcCommets,
-                          //         clientQcDate: item.clientQcDate,
-                          //         clientQcStatus: item.clientQcStatus,
-                          //         districtId: item.districtId,
-                          //         districtName: item.districtId,
-                          //         drawingName: item.drawingName,
-                          //         drawingNumber: item.drawingNumber,
-                          //         drawingRev: item.drawingRev,
-                          //         drawingType: item.drawingType,
-                          //         existTagNumber: item.existTagNumber,
-                          //         functionalClassification:
-                          //             item.functionalClassification,
-                          //         geoLocation: item.geoLocation,
-                          //         geoMapLink: item.geoMapLink,
-                          //         gisLinkId: item.gisLinkId,
-                          //         gisLocator: item.gisLocator,
-                          //         internalQcBy: item.internalQcBy,
-                          //         internalQcDate: item.internalQcDate,
-                          //         manufacture: item.manufacture,
-                          //         manufactureYear: item.manufactureYear,
-                          //         model: item.model,
-                          //         orgName: item.orgName,
-                          //         pinNumber: item.pinNumber,
-                          //         regionId: item.regionId,
-                          //         regionName: item.regionName,
-                          //         sectionId: item.sectionId,
-                          //         sectionName: item.sectionName,
-                          //         submissionDATE: item.submissionDATE,
-                          //         submissionTo: item.submissionTo,
-                          //         surveyedBy: item.surveyedBy,
-                          //         surveyedDate: item.surveyedDate,
-                          //         uniClassCode: item.uniClassCode,
-                          //         uniClassSlCode: item.uniClassSlCode,
-                          //         uniClassSlTitle: item.uniClassSlTitle,
-                          //         uniClassTitle: item.uniClassTitle,
-                          //         uniEnCode: item.uniEnCode,
-                          //         uniEnTitle: item.uniEnTitle,
-                          //       ),
-                          //     ),
-                          //   );
-                        },
-                        child: DelayedDisplay(
-                          child: Column(
-                            children: [item],
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  );
-                }
-              },
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.30,
-                      child: Lottie.asset('assets/images/welcome.json'),
+      body: Obx(
+        () => controller.isAssetDataLoaded.value
+            ? FutureBuilder(
+                future: controller.getAssetdataFuture,
+                initialData: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.30,
+                  child: Lottie.asset('assets/images/welcome.json'),
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: loadingShimmer());
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Image(image: AssetImage('assets/images/not_found.png')),
+                    );
+                  } else {
+                    // Check if the device is a tablet (iPad) and adjust layout
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isTablet ? 2 : 1, // 2 for iPad, 1 for phone
+                        crossAxisSpacing:isTablet ? 2:0.5,
+                        mainAxisSpacing: isTablet ? 2:1,
+                        childAspectRatio: isTablet ?MediaQuery.of(context).orientation == Orientation.portrait? 1.7 :2.7: 1.9, // Adjust card size for tablet
+                      ),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        var item = snapshot.data[index];
+                        return DelayedDisplay(
+                          child: item
+                        );
+                      },
+                    );
+                  }
+                },
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.30,
+                        child: Lottie.asset('assets/images/welcome.json'),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.30,
-                      child: Lottie.asset('assets/images/searchdoc.json'),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.30,
+                        child: Lottie.asset('assets/images/searchdoc.json'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            )),
-    );
-  }
-
+      ),
+    ),
+  );
+}
   Widget _buildFloatingButton(ClientMgrHomeController controller, context) {
     return FloatingActionBubble(
       items: <Bubble>[
@@ -240,7 +177,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
         Bubble(
           title: "Paramatric Screen",
           iconColor: Colors.white,
-          bubbleColor: Colors.blue,
+          bubbleColor: Color(0xff7165E3),
           icon: Icons.document_scanner,
           titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
           onPress: () {
@@ -253,7 +190,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
         Bubble(
           title: "FLOC Search",
           iconColor: Colors.white,
-          bubbleColor: Colors.blue,
+          bubbleColor: Color(0xff7165E3),
           icon: Icons.location_city_rounded,
           titleStyle: const TextStyle(fontSize: 16, color: Colors.white),
           onPress: () {
@@ -276,7 +213,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
       ],
       animation: controller.animation,
       onPress: controller.toggleAnimation,
-      iconColor: Colors.blue,
+      iconColor: Color(0xff7165E3),
       iconData: Icons.menu,
       backGroundColor: Colors.white,
     );
@@ -307,7 +244,12 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
             TextField(
               controller: controller.searchController,
               onSubmitted: (value) {
+
+                if(controller.searchController.text.isNotEmpty){
                 controller.onTapSearch();
+                }else{
+                  ToastCustom.infoToast(context, "Please enter search query");
+                }
               },
               decoration: InputDecoration(
                 hintText: 'Search...',
@@ -321,7 +263,13 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 20.0),
                 suffixIcon: IconButton(
-                  onPressed: controller.onTapSearch,
+                  onPressed: (){
+                     if(controller.searchController.text.isNotEmpty){
+                controller.onTapSearch();
+                }else{
+                  ToastCustom.infoToast(context, "Please enter search query");
+                }
+                  },
                   icon: const Icon(Icons.search_outlined),
                 ),
                 prefixIcon: Padding(

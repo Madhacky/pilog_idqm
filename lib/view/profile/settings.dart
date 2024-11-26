@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
+import 'package:pilog_idqm/helpers/toasts.dart';
+import 'package:pilog_idqm/helpers/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _isDarkMode = false;
+  final bool _isDarkMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,65 +31,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          SettingsTile(
-            icon: Icons.dark_mode,
-            title: 'Dark Mode',
-            trailing: Switch(
-              value: _isDarkMode,
-              onChanged: (value) {
-                setState(() {
-                  _isDarkMode = value;
-                  // Add logic to toggle dark mode
-                });
-              },
-            ),
-          ),
-          const Divider(color: Colors.grey),
+          
           SettingsTile(
             icon: Icons.privacy_tip,
             title: 'Privacy Policy',
-            onTap: () {
-              // Navigate to Privacy Policy screen
+            onTap: () async {
+              await urlLauncher(
+                  "https://www.piloggroup.com/privacy-policy.php");
             },
           ),
           const Divider(color: Colors.grey),
           SettingsTile(
             icon: Icons.info_outline,
             title: 'About Us',
-            onTap: () {
-              // Navigate to About Us screen
+            onTap: () async {
+              await urlLauncher(
+                  "https://www.piloggroup.com");
             },
           ),
           const Divider(color: Colors.grey),
-          SettingsTile(
-            icon: Icons.notifications,
-            title: 'Notifications',
-            onTap: () {
-              // Navigate to Notifications settings
-            },
-          ),
-          const Divider(color: Colors.grey),
+         
           SettingsTile(
             icon: Icons.security,
             title: 'Security',
             onTap: () {
-              // Navigate to Security settings
+              ToastCustom.infoToast(context, "Coming Soon..\nwe are continously working to enhance security");
             },
           ),
-          const Divider(color: Colors.grey),
-          SettingsTile(
-            icon: Icons.language,
-            title: 'Language',
-            onTap: () {
-              // Navigate to Language settings
-            },
-          ),
+         
           const Divider(color: Colors.grey),
           SettingsTile(
             icon: Icons.help_outline,
             title: 'Help & Support',
-            onTap: () {
-              // Navigate to Help & Support screen
+            onTap: ()async {
+                   await urlLauncher(
+                  "https://www.piloggroup.com/contact.php");
             },
           ),
           SettingsTile(
@@ -107,7 +88,7 @@ class SettingsTile extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onTap;
 
-  SettingsTile({
+  const SettingsTile({super.key, 
     required this.icon,
     required this.title,
     this.trailing,
@@ -117,7 +98,7 @@ class SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12))),
       leading: Icon(icon, color: const Color(0xff7165E3)),
       title: Text(
