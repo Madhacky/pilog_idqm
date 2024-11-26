@@ -1,8 +1,5 @@
-import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/helpers/init_services.dart';
@@ -18,12 +15,11 @@ void main() async {
 SharedPreferences? logindata;
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ConnectivityAppWrapper(
-      app: GestureDetector(
+    return GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
@@ -33,19 +29,12 @@ class MyApp extends StatelessWidget {
             primaryColor: Colors.purple,
           ),
           title: "Login App",
-          home: LoaderOverlay(
-              useDefaultLoading: false,
-              overlayWidgetBuilder: (_) {
-                return const Center(
-                  child: SpinKitCircle(
-                    color: Colors.white,
-                    size: 50.0,
-                  ),
-                );
-              },
-              child: const SplashScreen()),
+          home: const LoaderOverlay(
+              useDefaultLoading: true,
+             
+              child: SplashScreen()),
         ),
-      ),
-    );
+      );
+    
   }
 }

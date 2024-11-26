@@ -11,7 +11,7 @@ class CommonShimmer extends StatelessWidget {
   final Color? highlightColor;
   final double? height, width;
 
-  const CommonShimmer({
+  const CommonShimmer({super.key, 
     
     this.borderRadius,
     this.bgColor,

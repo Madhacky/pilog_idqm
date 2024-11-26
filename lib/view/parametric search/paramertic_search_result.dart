@@ -30,7 +30,7 @@ class _ParametricSearchResultScreenState
   Widget build(BuildContext context) {
     return Scaffold(  appBar: AppBar(
         title: Text("Parametric Search Results",   style: AppStyles.black_20_600,),
-        backgroundColor: Color(0xff7165E3),
+        backgroundColor: const Color(0xff7165E3),
       ),
         body: FutureBuilder<List<AssetDataCard>>(
       future: controller?.getParametricSearchResultFuture,

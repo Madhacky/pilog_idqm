@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AssetDataCardShimmer extends StatelessWidget {
+  const AssetDataCardShimmer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,8 +23,8 @@ class AssetDataCardShimmer extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
                   color: Colors.grey,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15),
@@ -61,13 +63,13 @@ class AssetDataCardShimmer extends StatelessWidget {
             Icons.info_outline,
             color: Colors.grey[300],
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Container(
             width: 100,
             height: 16,
             color: Colors.grey[300],
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Flexible(
             child: Container(
               height: 16,

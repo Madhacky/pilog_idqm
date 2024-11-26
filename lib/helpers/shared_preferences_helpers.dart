@@ -5,6 +5,10 @@ class SharedPreferencesHelper {
   static const String _ssOrgId = "ssOrgId";
   static const String _ssUserName = "ssUserName";
   static const String _ssRole = "ssRole";
+  static const String _ssRegion = "ssRegion";
+  static const String _ssInstance = "ssInstance";
+
+
 
 static Future<void> setIsLoggedIn(bool isLoggedIn) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -34,11 +38,35 @@ static Future<void> setIsLoggedIn(bool isLoggedIn) async {
     await prefs.setString(_ssOrgId, orgId);
   }
 
+  // Save a string value (e.g., email)
+  static Future<void> setRegion(String region) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_ssRegion, region);
+  }
+   // Get a string value (e.g., email)
+  static Future<String?> getRegion() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_ssRegion);
+  }
+
+ // Save a string value (e.g., email)
+  static Future<void> setInstance(String instance) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_ssInstance, instance);
+  }
+   // Get a string value (e.g., email)
+  static Future<String?> getInstance() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_ssInstance);
+  }
+
   // Get a string value (e.g., email)
   static Future<String?> getOrgId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_ssOrgId);
   }
+
+  
 
   static Future<void> setRole(String ssRole) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();

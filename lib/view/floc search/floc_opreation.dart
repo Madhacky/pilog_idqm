@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pilog_idqm/controller/floc_controller.dart';
-import 'package:pilog_idqm/controller/parametric_search_controller.dart';
 import 'package:pilog_idqm/global/app_styles.dart';
 import 'package:pilog_idqm/view/floc%20search/floc_search_result.dart';
 import 'package:shimmer/shimmer.dart';

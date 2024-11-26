@@ -30,8 +30,8 @@ class _FlocSearchResultScreenState extends State<FlocSearchResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("FLOC Search Results"),
-          backgroundColor: Color(0xff7165E3),
+          title: const Text("FLOC Search Results"),
+          backgroundColor: const Color(0xff7165E3),
         ),
         body: FutureBuilder<List<AssetDataCard>>(
           future: controller!.getFlocSearchResultFuture,

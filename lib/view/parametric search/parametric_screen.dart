@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pilog_idqm/controller/parametric_search_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
+import 'package:pilog_idqm/global/app_styles.dart';
 import 'package:pilog_idqm/view/floc%20search/floc_opreation.dart';
 import '../../global/widgets/searchable_dropdown.dart'; // Make sure to import your SearchableDropdown file
 
 class ParametricSearchScreen extends StatefulWidget {
+  const ParametricSearchScreen({super.key});
+
   @override
   State<ParametricSearchScreen> createState() => _ParametricSearchScreenState();
 }
@@ -18,8 +21,8 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Parametric Search"),
-        backgroundColor: Color(0xff7165E3),
+        title: const Text("Parametric Search"),
+        backgroundColor: const Color(0xff7165E3),
        
       ),
       body: SingleChildScrollView(
@@ -52,7 +55,7 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                   controller.equipmentTextController,
                   context,
                   controller.isequipmentNumbersLoaded),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Tech ID Row
               buildSearchCard('Tech ID', controller.selectedTechIDOperator,
@@ -63,7 +66,7 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                     ''; // Populate the text field with the selected value
               }, controller.techIds, controller.techIDTextController, context,
                   controller.istechIdsLoaded),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // FLOC Row
               buildSearchCard('FLOC', controller.selectedFLOCOperator,
@@ -74,16 +77,16 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                     ''; // Populate the text field with the selected value
               }, controller.flocs, controller.flocTextController, context,
                   controller.isflocsLoaded),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
 
               // Search Button
               ElevatedButton(
                 onPressed: () => controller.performSearch(context),
-                child: Text('Search'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff303030),
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  backgroundColor: const Color(0xff303030),
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
+                child: Text('Search',style: AppStyles.white_15_600,),
               ),
             ],
           ),
@@ -115,10 +118,10 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                     controller: textController,
                     decoration: InputDecoration(
                       labelText: label,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       suffixIcon: label.isNotEmpty
                           ? IconButton(
-                              icon: Icon(Icons.clear,color: AppColors.absoluteBlack,),
+                              icon: const Icon(Icons.clear,color: AppColors.absoluteBlack,),
                               onPressed: () {
                              
                                 textController.clear();
@@ -129,7 +132,7 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Obx(
                   () => DecoratedBox(
                     decoration: BoxDecoration(
@@ -138,7 +141,7 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                         value: selectedOperator.value,
                         items: controller.operators.map((String value) {
                           return DropdownMenuItem<String>(
@@ -155,24 +158,24 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                 Obx(
                   () => selectedOperator.value.isNotEmpty
                       ? IconButton(
-                          icon: Icon(Icons.clear),
+                          icon: const Icon(Icons.clear),
                           onPressed: () {
                             // Reset the dropdown value to an empty string or null
                             selectedOperator.value = '';
                             operatorChanged(null); // Trigger the change
                           },
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Obx(
               () => SearchableDropdown(
                 isItemLoaded: isItemLoaded,
                 hintText: 'Select $label',
                 searchBoxHintText: 'Search $label',
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 items: items.obs,
                 selectedValue: items.contains(selectedOperator.value)
                     ? selectedOperator.value

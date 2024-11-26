@@ -7,7 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,7 @@ import 'package:pilog_idqm/helpers/pdf_viewer.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
-import 'package:pilog_idqm/view/login_screen.dart';
+import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientMgrHomeController extends GetxController
@@ -355,9 +354,9 @@ class ClientMgrHomeController extends GetxController
     required String masterColumn14,
     required String masterColumn13,
   }) async {
-    final String host_url = "https://ifar.pilogcloud.com/";
-    final String reqid = "FEC608B8AA8EB026E0538400000AFD69";
-    final String orgnId = "C1F5CFB03F2E444DAE78ECCEAD80D27D";
+    const String hostUrl = "https://ifar.pilogcloud.com/";
+    const String reqid = "FEC608B8AA8EB026E0538400000AFD69";
+    const String orgnId = "C1F5CFB03F2E444DAE78ECCEAD80D27D";
     final String username =
         (await SharedPreferencesHelper.getUsername())!.toUpperCase();
 
@@ -376,7 +375,7 @@ class ClientMgrHomeController extends GetxController
     });
 
     var response = await http.post(
-      Uri.parse("${host_url}updateApiRequestResultsData"),
+      Uri.parse("${hostUrl}updateApiRequestResultsData"),
       headers: headers,
       body: body,
     );
@@ -406,10 +405,10 @@ class ClientMgrHomeController extends GetxController
       "apiRetType": "JSON"
     });
 
-    var response;
+    http.Response response;
     try {
       response = await http.post(
-        Uri.parse(host_url + 'getApiRequestResultsData'),
+        Uri.parse('${host_url}getApiRequestResultsData'),
         headers: headers,
         body: body,
       );
@@ -547,17 +546,12 @@ class ClientMgrHomeController extends GetxController
   ) async {
     Get.deleteAll();
     await SharedPreferencesHelper.clearAll();
-    Navigator.pushReplacement(
-        context, CupertinoPageRoute<bool>(builder: (_) => LoginScreen()));
-    Fluttertoast.showToast(
-      msg: "Thank You",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.SNACKBAR,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Color.fromRGBO(11, 74, 153, 1),
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
+    if(context.mounted){
+          Navigator.pushReplacement(
+        context, CupertinoPageRoute<bool>(builder: (_) => const LoginScreen()));
+ToastCustom.infoToast(context, "Logged out");
+    }
+
   }
 
   Future updateAssetLocation(

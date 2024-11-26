@@ -63,7 +63,7 @@ class FlocController extends GetxController {
 
     // Count the occurrences of each FLOC item from the controller
     for (var item in flocIds) {
-      if (item != null && item.isNotEmpty) {
+      if (item.isNotEmpty) {
         // Normalize FLOC item by trimming and converting to lowercase
         String normalizedItem = item.trim().toLowerCase();
         flocCount[normalizedItem] = (flocCount[normalizedItem] ?? 0) + 1;

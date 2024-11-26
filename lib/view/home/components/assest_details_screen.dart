@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
@@ -28,7 +29,7 @@ class AssetDetailsScreen extends StatefulWidget {
   final String? lng;
 
   const AssetDetailsScreen(
-      {Key? key,
+      {super.key,
       this.recordNo,
       this.classTerm,
       this.shortDescription,
@@ -38,8 +39,7 @@ class AssetDetailsScreen extends StatefulWidget {
       this.equipmentNo,
       this.techID,
       this.lat,
-      this.lng})
-      : super(key: key);
+      this.lng});
 
   @override
   State<AssetDetailsScreen> createState() => _AssetDetailsScreenState();
@@ -68,7 +68,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
   File? _image;
   bool isLoading = false;
 
-  Future<void> _takePicture() async {
+ Future<void> _takePicture() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
@@ -150,8 +150,8 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
                     title: const Text('Select Option'),
                     actions: [
                       CupertinoActionSheetAction(
-                        onPressed: () {
-                          _takePicture();
+                        onPressed: () async{
+                        await  _takePicture();
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -389,7 +389,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
             style: AppStyles.black_15_400,
             enabled: false,
             initialValue: value ?? '',
-            style: const TextStyle(color: Colors.black87),
+          //  style: const TextStyle(color: Colors.black87),
             maxLines: null, // This allows the text field to grow as needed
             minLines: 1, // The minimum number of lines to display
             decoration: InputDecoration(
@@ -413,14 +413,14 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
         children: [
           Text(
             label,
-            style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.absoluteBlack),
+            style: const TextStyle(fontWeight: FontWeight.bold,color: AppColors.absoluteBlack),
           ),
           TextField(
             controller: clientQcCommentsController,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               hintText: label,
-              hintStyle: TextStyle(color: AppColors.absoluteBlack)
+              hintStyle: const TextStyle(color: AppColors.absoluteBlack)
             ),
           ),
         ],

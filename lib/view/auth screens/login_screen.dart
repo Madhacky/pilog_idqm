@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/login_controller.dart';
-import 'package:pilog_idqm/view/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,17 +15,20 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isLargeScreen = screenWidth > 600; // Adjust for desktop vs. mobile
+
     return LoaderOverlay(
       useDefaultLoading: true,
       child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(  
+            padding: EdgeInsets.symmetric(horizontal: isLargeScreen ? screenWidth * 0.2 : 24.0),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const SizedBox(height: 30),
-                Image(
+                const Image(
                   height: 90,
                   image: AssetImage("assets/images/PiLog Logo.png"),
                 ),
@@ -34,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 Text(
                   'Welcome Back!',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: isLargeScreen ? 36 : 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
@@ -43,12 +45,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 Text(
                   'Please login to your account',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: isLargeScreen ? 20 : 18,
                     color: Colors.black54,
                   ),
                 ),
                 const SizedBox(height: 40),
-                buildLoginForm(),
+                buildLoginForm(isLargeScreen),
               ],
             ),
           ),
@@ -57,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  Widget buildLoginForm() {
+  Widget buildLoginForm(bool isLargeScreen) {
     return Card(
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -74,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             const SizedBox(height: 20),
             Obx(() => buildErrorMessages()),
             const SizedBox(height: 20),
-            buildLoginButton(),
+            buildLoginButton(isLargeScreen),
           ],
         ),
       ),
@@ -83,7 +85,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   Widget buildUserNameField() {
     return TextFormField(
-      
       keyboardType: TextInputType.text,
       onChanged: (value) {
         controller.userError.value = false;
@@ -92,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       style: const TextStyle(color: Colors.black87),
       decoration: InputDecoration(
         labelText: 'User Name',
-        labelStyle: TextStyle(color: Colors.blueGrey),
+        labelStyle: const TextStyle(color: Colors.blueGrey),
         fillColor: Colors.grey[100],
         filled: true,
         focusedBorder: OutlineInputBorder(
@@ -119,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       controller: controller.passWordText,
       decoration: InputDecoration(
         labelText: 'Password',
-        labelStyle: TextStyle(color: Colors.blueGrey),
+        labelStyle: const TextStyle(color: Colors.blueGrey),
         fillColor: Colors.grey[100],
         filled: true,
         focusedBorder: OutlineInputBorder(
@@ -139,17 +140,17 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (controller.userError.value)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
               'Invalid credentials. Please check Username and try again.',
               style: TextStyle(color: Colors.red),
             ),
           ),
         if (controller.passError.value)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: const Text(
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
               'Invalid credentials. Please check Password and try again.',
               style: TextStyle(color: Colors.red),
             ),
@@ -158,14 +159,12 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  Widget buildLoginButton() {
+  Widget buildLoginButton(bool isLargeScreen) {
     return ElevatedButton(
       onPressed: () async {
         // Simple animation effect
-        
         controller.signIn(context);
         Get.focusScope!.unfocus(); // Close the keyboard
-        
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(15),
@@ -174,8 +173,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         ),
         backgroundColor: Colors.blueGrey,
         foregroundColor: Colors.white,
-        textStyle: const TextStyle(
-          fontSize: 16,
+        textStyle: TextStyle(
+          fontSize: isLargeScreen ? 18 : 16,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -183,4 +182,3 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 }
-
