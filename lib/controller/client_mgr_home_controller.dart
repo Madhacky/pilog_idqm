@@ -355,7 +355,6 @@ class ClientMgrHomeController extends GetxController
     required String masterColumn14,
     required String masterColumn13,
   }) async {
-    final String host_url = "https://ifar.pilogcloud.com/";
     final String reqid = "FEC608B8AA8EB026E0538400000AFD69";
     final String orgnId = "C1F5CFB03F2E444DAE78ECCEAD80D27D";
     final String username =

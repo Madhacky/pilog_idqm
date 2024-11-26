@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pilog_idqm/controller/parametric_search_controller.dart';
@@ -20,7 +21,6 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
       appBar: AppBar(
         title: Text("Parametric Search"),
         backgroundColor: Color(0xff7165E3),
-       
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -75,6 +75,8 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
               }, controller.flocs, controller.flocTextController, context,
                   controller.isflocsLoaded),
               SizedBox(height: 24),
+              buildBarcodeScanner(),
+              SizedBox(height: 24),
 
               // Search Button
               ElevatedButton(
@@ -87,6 +89,33 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  //build bar code scanner
+  Widget buildBarcodeScanner() {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: controller.barcodeScannerController,
+                decoration: InputDecoration(
+                  labelText: "Tag Number",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            // IconButton(
+            //     onPressed: () async{await controller.scanBarcodeNormal(context);},
+            //     icon: const Icon(CupertinoIcons.doc_text_viewfinder))
+          ],
         ),
       ),
     );
@@ -118,11 +147,12 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                       border: OutlineInputBorder(),
                       suffixIcon: label.isNotEmpty
                           ? IconButton(
-                              icon: Icon(Icons.clear,color: AppColors.absoluteBlack,),
+                              icon: Icon(
+                                Icons.clear,
+                                color: AppColors.absoluteBlack,
+                              ),
                               onPressed: () {
-                             
                                 textController.clear();
-                                
                               },
                             )
                           : null,

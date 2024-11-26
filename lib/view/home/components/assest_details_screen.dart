@@ -389,7 +389,7 @@ class _AssetDetailsScreenState extends State<AssetDetailsScreen> {
             style: AppStyles.black_15_400,
             enabled: false,
             initialValue: value ?? '',
-            style: const TextStyle(color: Colors.black87),
+           
             maxLines: null, // This allows the text field to grow as needed
             minLines: 1, // The minimum number of lines to display
             decoration: InputDecoration(

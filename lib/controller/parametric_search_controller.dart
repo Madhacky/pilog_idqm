@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:pilog_idqm/helpers/api_services.dart';
@@ -74,6 +76,34 @@ class ParametricSearchController extends GetxController {
 
     //   generateSQLQuery();
   }
+
+
+//bar code scanner function
+final TextEditingController _barcodeController = TextEditingController();
+TextEditingController get  barcodeScannerController =>  _barcodeController;
+  // Future<void> scanBarcodeNormal(BuildContext context) async {
+  //   String barcodeScanRes;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+  //         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+  //     print(barcodeScanRes);
+  //   } on PlatformException {
+  //     barcodeScanRes = 'Failed to get platform version.';
+  //   }
+
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!context.mounted) return;
+
+
+  //     //_scanBarcode = barcodeScanRes;
+  //     barcodeScannerController.text = barcodeScanRes;
+
+  // }
+
+
 
 //get dropdown value for mrdm number
   Future<List<String>> getMdrmNumber(

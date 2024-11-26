@@ -107,11 +107,11 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                   return const Center(
                       child: Image(
                           image: AssetImage('assets/images/not_found.png')));
-                } else {
+                } else {  
                   return ListView(
-                    children: snapshot.data.map<Widget>((item) {
-                      return GestureDetector(
-                        onTap: () {
+                      children: snapshot.data.map<Widget>((item) {
+                        return GestureDetector(
+                          onTap: () {
                           //   Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
@@ -120,7 +120,8 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
                           //         entityName: item.entityName,
                           //         tag: item.tag,
                           //         asserTitle: item.asserTitle,
-                          //         assertDescription: item.assertDescription,
+                          //         assertDescription: item.a
+                          // ssertDescription,
                           //         fieldComments: item.fieldComments,
                           //         floorLevel: item.floorLevel,
                           //         floorLevelName: item.floorLevelName,

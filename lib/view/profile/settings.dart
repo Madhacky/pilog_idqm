@@ -17,7 +17,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: const Color(0xff7165E3),
         elevation: 0,
         centerTitle: true,
-        title: const Text('Settings', style: TextStyle(color: Colors.white, fontSize: 22,fontWeight: FontWeight.w600)),
+        title: const Text('Settings',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.w600)),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -83,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Navigate to Help & Support screen
             },
           ),
-           SettingsTile(
+          SettingsTile(
             icon: Icons.logout,
             title: 'Logout',
             onTap: () {
@@ -112,13 +116,17 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+    return ListTile(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12))),
       leading: Icon(icon, color: const Color(0xff7165E3)),
       title: Text(
         title,
         style: const TextStyle(fontSize: 16, color: Colors.black87),
       ),
-      trailing: trailing ?? const Icon(Icons.arrow_forward_ios, color: Color(0xff7165E3), size: 16),
+      trailing: trailing ??
+          const Icon(Icons.arrow_forward_ios,
+              color: Color(0xff7165E3), size: 16),
       onTap: onTap,
     );
   }
