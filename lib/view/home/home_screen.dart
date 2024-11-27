@@ -86,7 +86,7 @@ class _ClientMgrHomeScreenState extends State<ClientMgrHomeScreen> {
 Widget _buildDataWidget(
     BuildContext context, ClientMgrHomeController controller) {
   // Detect device size and platform
-  bool isTablet = (MediaQuery.of(context).size.shortestSide > 600) && (Platform.isIOS || Platform.isAndroid);
+  bool isTablet = (MediaQuery.of(context).size.shortestSide > 600) ;
 
   return PopScope(
      canPop: false,

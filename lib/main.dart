@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/helpers/init_services.dart';
+import 'package:pilog_idqm/view/home/home_screen.dart';
 import 'package:pilog_idqm/view/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           home: const LoaderOverlay(
               useDefaultLoading: true,
              
-              child: SplashScreen()),
+              child: ClientMgrHomeScreen()),
         ),
       );
     
