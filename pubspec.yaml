@@ -51,6 +51,7 @@ dependencies:
   introduction_screen: ^3.1.14
   loader_overlay: ^4.0.1
   lottie: ^3.1.2
+  mobile_scanner: ^3.5.6
   path_provider: ^2.1.4
   permission_handler: ^11.3.1
   photo_view: ^0.15.0

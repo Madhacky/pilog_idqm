@@ -1,5 +1,7 @@
+import 'dart:convert'; // For JSON encoding
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
 
 class AssetDataCard extends StatefulWidget {
@@ -13,97 +15,103 @@ class AssetDataCard extends StatefulWidget {
   final String? techId;
   final String? lat;
   final String? long;
-
-
-  // final String? registerColumn8;
-  // final String? registerColumn5;
-  // final String? abbreviation;
-  // final String? clientNumber;
-  // final String? equipmentCategory;
-  // final String? unspscCode;
-  // final String? buCustCol26;
-  // final String? startupDate;
-  // final String? createdOn;
-  // final String? domain;
-  // final String? erpsfd;
-  // final String? descriptionOfTechObj;
-  // final String? originalShort;
-  // final String? typeOfTechObj;
-  // final String? constructionYear;
-  // final String? plant;
-  // final String? auditId;
-  // final String? manufacturer;
-  // final String? manufacturerModel;
-  // final String? equipCatForProduction;
-  // final String? vendorNumber;
-  // final String? floc;
-  // final String? recordNo;
-  // final String? objectNumber;
-  // final String? orgnId;
-  // final String? materialNumber;
-
-  const AssetDataCard(
-      {super.key,
-      this.recordNo,
-      this.classTerm,
-      this.shortDescription,
-      this.longDesc,
-      this.status,
-      this.imageName,
-      this.equipmentNumber, this.techId, this.lat, this.long
-
-      // this.registerColumn8,
-      // this.registerColumn5,
-      // this.abbreviation,
-      // this.clientNumber,
-      // this.equipmentCategory,
-      // this.unspscCode,
-      // this.buCustCol26,
-      // this.startupDate,
-      // this.createdOn,
-      // this.domain,
-      // this.erpsfd,
-      // this.descriptionOfTechObj,
-      // this.originalShort,
-      // this.typeOfTechObj,
-      // this.constructionYear,
-      // this.plant,
-      // this.auditId,
-      // this.manufacturer,
-      // this.manufacturerModel,
-      // this.equipCatForProduction,
-      // this.vendorNumber,
-      // this.floc,
-      // this.recordNo,
-      // this.objectNumber,
-      // this.orgnId,
-      // this.materialNumber,
-      });
+  final String? floc;
+final String? floc_desc;
+  const AssetDataCard({
+    super.key,
+    this.recordNo,
+    this.classTerm,
+    this.shortDescription,
+    this.longDesc,
+    this.status,
+    this.imageName,
+    this.equipmentNumber,
+    this.techId,
+    this.lat,
+    this.long,
+    this.floc, this.floc_desc,
+  });
 
   @override
   State<AssetDataCard> createState() => _AssetDataCardState();
 }
 
 class _AssetDataCardState extends State<AssetDataCard> {
+  bool isFavorite = false; // Track favorite status
+
+  Future<void> _saveToFavorites() async {
+    // Convert card data to a map
+    final cardData = {
+      "classTerm": widget.classTerm,
+      "recordNo": widget.recordNo,
+      "shortDescription": widget.shortDescription,
+      "longDesc": widget.longDesc,
+      "status": widget.status,
+      "imageName": widget.imageName,
+      "equipmentNumber": widget.equipmentNumber,
+      "techId": widget.techId,
+      "lat": widget.lat,
+      "long": widget.long,
+      "floc": widget.floc,
+    };
+
+    // Access shared preferences
+    final prefs = await SharedPreferences.getInstance();
+
+    // Retrieve existing favorites or initialize as empty list
+    final List<String> favorites =
+        prefs.getStringList('favorites') ?? [];
+
+    // Check if an item with the same techId already exists
+    final bool alreadyExists = favorites.any((item) {
+      final existingItem = jsonDecode(item);
+      return existingItem['techId'] == widget.techId;
+    });
+
+    if (alreadyExists) {
+      // Show SnackBar if the item is already saved
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Item already saved!")),
+      );
+      return;
+    }
+
+    // Add the new card data as a JSON string
+    favorites.add(jsonEncode(cardData));
+
+    // Save updated list to shared preferences
+    await prefs.setStringList('favorites', favorites);
+
+    // Update UI
+    setState(() {
+      isFavorite = true;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Added to Favorites!")),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.push(
-          context,
-          CupertinoPageRoute<bool>(
-              builder: (_) => AssetDetailsScreen(
-                    classTerm: widget.classTerm,
-                    longDesc: widget.longDesc,
-                    recordNo: widget.recordNo,
-                    shortDescription: widget.shortDescription,
-                    status: widget.status,
-                    imageName: widget.imageName,
-                    equipmentNo: widget.equipmentNumber,
-                    techID:widget.techId ,
-                    lat: widget.lat,
-                    lng: widget.long,
-
-                  ))),
+        context,
+        CupertinoPageRoute<bool>(
+          builder: (_) => AssetDetailsScreen(
+            classTerm: widget.classTerm,
+            longDesc: widget.longDesc,
+            recordNo: widget.recordNo,
+            shortDescription: widget.shortDescription,
+            status: widget.status,
+            imageName: widget.imageName,
+            equipmentNo: widget.equipmentNumber,
+            techID: widget.techId,
+            lat: widget.lat,
+            lng: widget.long,
+          ),
+        ),
+      ),
       child: Column(
         children: [
           Padding(
@@ -114,14 +122,13 @@ class _AssetDataCardState extends State<AssetDataCard> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
-              //   color: Color(0xff7165E3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Header with gradient background and title
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(5),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
                         colors: [Color(0xff7165E3), Colors.indigo],
@@ -133,15 +140,31 @@ class _AssetDataCardState extends State<AssetDataCard> {
                         topRight: Radius.circular(20),
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        widget.classTerm ?? "",
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffe8e7f4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox(),
+                        Center(
+                          child: Text(
+                            widget.classTerm ?? "",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xffe8e7f4),
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox()
+                        // IconButton(
+                        //   icon: Icon(
+                        //     isFavorite
+                        //         ? Icons.star
+                        //         : Icons.star_border_outlined,
+                        //     color: isFavorite ? Colors.amber : Colors.white,
+                        //   ),
+                        //   onPressed: _saveToFavorites,
+                        // ),
+                      ],
                     ),
                   ),
                   // Content with information rows
@@ -150,13 +173,12 @@ class _AssetDataCardState extends State<AssetDataCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildInfoRow("RECORD NO", widget.recordNo),
+                        _buildInfoRow("TECH ID", widget.techId,16),
                         const SizedBox(height: 5),
-                        _buildInfoRow("EQUIPMENT NO", widget.equipmentNumber),
+                        _buildInfoRow("EQUIPMENT NO", widget.equipmentNumber,16),
                         const SizedBox(height: 5),
-                        _buildInfoRow("STATUS", widget.status),
-                        //  SizedBox(height: 5),
-                        // _buildInfoRow("CLASS_TERM	", widget.classTerm),
+                        _buildInfoRow("FLOC", widget.floc,16),
+                         _buildInfoRow("FLOC DESC", widget.floc_desc,14),
                       ],
                     ),
                   ),
@@ -169,7 +191,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
     );
   }
 
-  Widget _buildInfoRow(String label, String? value) {
+  Widget _buildInfoRow(String label, String? value,double fontSize) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -180,7 +202,6 @@ class _AssetDataCardState extends State<AssetDataCard> {
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              //  color: Color(0xffe8e7f4),
             ),
           ),
           Flexible(
@@ -188,9 +209,8 @@ class _AssetDataCardState extends State<AssetDataCard> {
               message: value ?? "",
               child: Text(
                 value ?? "",
-                style: const TextStyle(
-                  fontSize: 16,
-                  //  color: Colors.white,
+                style:  TextStyle(
+                  fontSize:fontSize,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

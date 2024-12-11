@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:pilog_idqm/global/widgets/stacked_card.dart';
 
 import 'package:pilog_idqm/helpers/api_services.dart';
 import 'package:pilog_idqm/helpers/pdf_viewer.dart';
@@ -118,6 +119,7 @@ class ClientMgrHomeController extends GetxController
   void onInit() {
     super.onInit();
     host_url = dotenv.get("HOST_URL");
+    loadSavedItems();
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 260),
@@ -336,6 +338,8 @@ class ClientMgrHomeController extends GetxController
             long: object["BU_DH_CUST_COL34"] == null
                 ? null
                 : object["BU_DH_CUST_COL34"].toString().split(',')[1],
+            floc: object["FLOC"],
+            floc_desc: object["FLOC_DESCRIPTION"],
           ));
         }
         log("adataaaaaa ${result!['apiDataArray'][0]["RECORD_NO"]}");
@@ -546,12 +550,11 @@ class ClientMgrHomeController extends GetxController
   ) async {
     Get.deleteAll();
     await SharedPreferencesHelper.clearAll();
-    if(context.mounted){
-          Navigator.pushReplacement(
-        context, CupertinoPageRoute<bool>(builder: (_) => const LoginScreen()));
-ToastCustom.infoToast(context, "Logged out");
+    if (context.mounted) {
+      Navigator.pushReplacement(context,
+          CupertinoPageRoute<bool>(builder: (_) => const LoginScreen()));
+      ToastCustom.infoToast(context, "Logged out");
     }
-
   }
 
   Future updateAssetLocation(
@@ -620,6 +623,62 @@ ToastCustom.infoToast(context, "Logged out");
     } catch (e) {
       context.loaderOverlay.hide();
 
+      log("error $e");
+      return Future.error(e.toString());
+    }
+  }
+
+  //get equipment and tech id list
+  RxList<CardItem> savedItems = RxList();
+  Future<void> loadSavedItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<String> favorites = prefs.getStringList('favorites') ?? [];
+
+    // Decode JSON strings into CardItem objects
+    final items = favorites.map((item) {
+      final jsonData = jsonDecode(item);
+      return CardItem(
+        title: jsonData['techId'] ?? 'Unknown Tech ID',
+        date: jsonData['classTerm'] ?? 'No Date',
+        subtitle: jsonData['equipmentNumber'] ?? 'No Equipment Number',
+      );
+    }).toList();
+
+    savedItems.value = items;
+    update();
+  }
+
+  List<CardItem> cardItems = [];
+  Future<List<CardItem>> getMdrmNumber(
+      String columnName, RxList<String> items, RxBool isItemLoaded) async {
+    try {
+      final response = await ApiServices().requestPostForApi(
+        url: "${host_url}getApiRequestResultsData",
+        dictParameter: {
+          "apiReqId": "7B105EDE59C442D585198D501FED3B51",
+          "apiReqCols": "'' AS EMPTY_COL ,$columnName",
+          "apiReqWhereClause": "",
+          "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
+          "apiReqUserId": "KT_VBR_MGR",
+          "apiRetType": "JSON"
+        },
+        authToken: false,
+      );
+
+      log("status ${response?.statusCode}");
+      if (response?.statusCode == 200) {
+        var result = jsonDecode(response!.data.toString());
+        for (var object in result!['apiDataArray']) {
+          cardItems.add(object[columnName]);
+        }
+        log("adataaaaaa ${cardItems.length}");
+        isItemLoaded.value = true;
+        update();
+        return cardItems;
+      } else {
+        return Future.error('Error: ${response?.statusCode}');
+      }
+    } catch (e) {
       log("error $e");
       return Future.error(e.toString());
     }

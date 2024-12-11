@@ -644,3 +644,40 @@ static TextStyle white_30_300 = const TextStyle(
 class AppFont{
   static const String fontFamily = "Optima";
 }
+
+
+
+
+class AppStylesCormorant {
+  static const String _fontFamily = 'Cormorant';
+
+  /// Generates a [TextStyle] with the specified parameters.
+  static TextStyle getStyle({
+    required Color color,
+    required double fontSize,
+    required FontWeight fontWeight,
+  }) {
+    return TextStyle(
+      color: color,
+      fontSize: fontSize,
+      fontFamily: _fontFamily,
+      fontWeight: fontWeight,
+    );
+  }
+
+  // Example usage for black text styles
+  static TextStyle black({required double fontSize, required FontWeight fontWeight}) =>
+      getStyle(color: AppColors.black, fontSize: fontSize, fontWeight: fontWeight);
+
+  // Example usage for white text styles
+  static TextStyle white({required double fontSize, required FontWeight fontWeight}) =>
+      getStyle(color: AppColors.white, fontSize: fontSize, fontWeight: fontWeight);
+
+  // Example usage for custom-colored text styles
+  static TextStyle custom({
+    required Color color,
+    required double fontSize,
+    required FontWeight fontWeight,
+  }) =>
+      getStyle(color: color, fontSize: fontSize, fontWeight: fontWeight);
+}

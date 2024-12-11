@@ -118,7 +118,7 @@ Widget _buildDataWidget(
                         crossAxisCount: isTablet ? 2 : 1, // 2 for iPad, 1 for phone
                         crossAxisSpacing:isTablet ? 2:0.5,
                         mainAxisSpacing: isTablet ? 2:1,
-                        childAspectRatio: isTablet ?MediaQuery.of(context).orientation == Orientation.portrait? 1.7 :2.7: 1.9, // Adjust card size for tablet
+                        childAspectRatio: isTablet ?MediaQuery.of(context).orientation == Orientation.portrait? 1.7 :2.7: 1.7, // Adjust card size for tablet
                       ),
                       itemCount: snapshot.data.length,
                       itemBuilder: (context, index) {
@@ -152,6 +152,7 @@ Widget _buildDataWidget(
                   ],
                 ),
               ),
+              //StackCardToggle(items: controller.savedItems)
       ),
     ),
   );

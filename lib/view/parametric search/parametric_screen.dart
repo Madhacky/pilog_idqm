@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pilog_idqm/controller/parametric_search_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/global/app_styles.dart';
-import 'package:pilog_idqm/view/floc%20search/floc_opreation.dart';
-import '../../global/widgets/searchable_dropdown.dart'; // Make sure to import your SearchableDropdown file
+import 'package:pilog_idqm/global/widgets/searchable_dropdown.dart';
 
 class ParametricSearchScreen extends StatefulWidget {
   const ParametricSearchScreen({super.key});
@@ -31,52 +31,75 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
           child: Column(
             children: [
               // MDRM Number Row
-              buildSearchCard('MDRM Number', controller.selectedMdrmOperator,
-                  (value) => controller.selectedMdrmOperator.value = value!,
-                  (value) {
-                controller.selectedMdrmValue.value = value ?? "";
-                controller.mdrmTextController.text = value ??
-                    ''; // Populate the text field with the selected value
-              }, controller.mdrmNumbers, controller.mdrmTextController, context,
-                  controller.isMdrmNumbersLoaded),
+              buildSearchCard(
+                'MDRM Number', 
+                controller.selectedMdrmOperator,
+                (value) => controller.selectedMdrmOperator.value = value!,
+                (value) {
+                  controller.selectedMdrmValue.value = value ?? "";
+                  controller.mdrmTextController.text = value ?? ''; 
+                }, 
+                controller.mdrmNumbers, 
+                controller.mdrmTextController, 
+                context,
+                controller.isMdrmNumbersLoaded
+              ),
               const SizedBox(height: 16),
 
               // Equipment Number Row
               buildSearchCard(
-                  'Equipment Number',
-                  controller.selectedEquipmentOperator,
-                  (value) => controller.selectedEquipmentOperator.value =
-                      value!, (value) {
-                controller.selectedEquipmentValue.value = value ?? "";
-                controller.equipmentTextController.text = value ??
-                    ''; // Populate the text field with the selected value
-              },
-                  controller.equipmentNumbers,
-                  controller.equipmentTextController,
-                  context,
-                  controller.isequipmentNumbersLoaded),
+                'Equipment Number',
+                controller.selectedEquipmentOperator,
+                (value) => controller.selectedEquipmentOperator.value = value!, 
+                (value) {
+                  controller.selectedEquipmentValue.value = value ?? "";
+                  controller.equipmentTextController.text = value ?? ''; 
+                },
+                controller.equipmentNumbers,
+                controller.equipmentTextController,
+                context,
+                controller.isequipmentNumbersLoaded
+              ),
               const SizedBox(height: 16),
 
               // Tech ID Row
-              buildSearchCard('Tech ID', controller.selectedTechIDOperator,
-                  (value) => controller.selectedTechIDOperator.value = value!,
-                  (value) {
-                controller.selectedTechIDValue.value = value ?? "";
-                controller.techIDTextController.text = value ??
-                    ''; // Populate the text field with the selected value
-              }, controller.techIds, controller.techIDTextController, context,
-                  controller.istechIdsLoaded),
+              buildSearchCard(
+                'Tech ID', 
+                controller.selectedTechIDOperator,
+                (value) => controller.selectedTechIDOperator.value = value!,
+                (value) {
+                  controller.selectedTechIDValue.value = value ?? "";
+                  controller.techIDTextController.text = value ?? ''; 
+                }, 
+                controller.techIds, 
+                controller.techIDTextController, 
+                context,
+                controller.istechIdsLoaded
+              ),
               const SizedBox(height: 16),
 
               // FLOC Row
-              buildSearchCard('FLOC', controller.selectedFLOCOperator,
-                  (value) => controller.selectedFLOCOperator.value = value!,
-                  (value) {
-                controller.selectedFLOCValue.value = value ?? "";
-                controller.flocTextController.text = value ??
-                    ''; // Populate the text field with the selected value
-              }, controller.flocs, controller.flocTextController, context,
-                  controller.isflocsLoaded),
+              buildSearchCard(
+                'FLOC', 
+                controller.selectedFLOCOperator,
+                (value) => controller.selectedFLOCOperator.value = value!,
+                (value) {
+                  controller.selectedFLOCValue.value = value ?? "";
+                  controller.flocTextController.text = value ?? ''; 
+                }, 
+                controller.flocs, 
+                controller.flocTextController, 
+                context,
+                controller.isflocsLoaded
+              ),
+              const SizedBox(height: 16),
+
+   
+           
+              const SizedBox(height: 16),
+
+              // Barcode Scanner Row
+              buildBarcodeScanner(),
               const SizedBox(height: 24),
 
               // Search Button
@@ -86,7 +109,10 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                   backgroundColor: const Color(0xff303030),
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                child: Text('Search',style: AppStyles.white_15_600,),
+                child: Text(
+                  'Search',
+                  style: AppStyles.white_15_600,
+                ),
               ),
             ],
           ),
@@ -95,7 +121,7 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
     );
   }
 
-  //build bar code scanner
+  // Barcode Scanner Widget
   Widget buildBarcodeScanner() {
     return Card(
       elevation: 4,
@@ -113,24 +139,42 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                 ),
               ),
             ),
-            // IconButton(
-            //     onPressed: () async{await controller.scanBarcodeNormal(context);},
-            //     icon: const Icon(CupertinoIcons.doc_text_viewfinder))
+            IconButton(
+              onPressed: () => scanBarcode(context),
+              icon: const Icon(CupertinoIcons.doc_text_viewfinder)
+            )
           ],
         ),
       ),
     );
   }
 
+  // Barcode Scanning Method
+  void scanBarcode(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BarcodeScannerPage(),
+      ),
+    );
+
+    // If a barcode was scanned, update the text field
+    if (result != null) {
+      controller.barcodeScannerController.text = result;
+    }
+  }
+
+  // Reusable Search Card Widget
   Widget buildSearchCard(
-      String label,
-      RxString selectedOperator,
-      ValueChanged<String?> operatorChanged,
-      ValueChanged<String?> onItemSelected,
-      List<String> items,
-      TextEditingController textController,
-      BuildContext context,
-      RxBool isItemLoaded) {
+    String label,
+    RxString selectedOperator,
+    ValueChanged<String?> operatorChanged,
+    ValueChanged<String?> onItemSelected,
+    List<String> items,
+    TextEditingController textController,
+    BuildContext context,
+    RxBool isItemLoaded
+  ) {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -148,7 +192,10 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                       border: const OutlineInputBorder(),
                       suffixIcon: label.isNotEmpty
                           ? IconButton(
-                              icon: const Icon(Icons.clear,color: AppColors.absoluteBlack,),
+                              icon: const Icon(
+                                Icons.clear,
+                                color: AppColors.absoluteBlack,
+                              ),
                               onPressed: () {
                                 textController.clear();
                               },
@@ -185,9 +232,8 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                       ? IconButton(
                           icon: const Icon(Icons.clear),
                           onPressed: () {
-                            // Reset the dropdown value to an empty string or null
                             selectedOperator.value = '';
-                            operatorChanged(null); // Trigger the change
+                            operatorChanged(null);
                           },
                         )
                       : const SizedBox(),
@@ -211,6 +257,65 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Barcode Scanner Page
+class BarcodeScannerPage extends StatefulWidget {
+  @override
+  _BarcodeScannerPageState createState() => _BarcodeScannerPageState();
+}
+
+class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
+  final MobileScannerController _scannerController = MobileScannerController(
+    detectionSpeed: DetectionSpeed.noDuplicates,
+    facing: CameraFacing.back,
+  );
+
+  @override
+  void dispose() {
+    _scannerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Scan Barcode'),
+        // actions: [
+        //   // Flash toggle
+        //   IconButton(
+        //     icon: ValueListenableBuilder(
+        //       valueListenable: _scannerController.t,
+        //       builder: (context, state, child) {
+        //         switch (state) {
+        //           case TorchState.off:
+        //             return Icon(Icons.flash_off, color: Colors.grey);
+        //           case TorchState.on:
+        //             return Icon(Icons.flash_on, color: Colors.yellow);
+        //             default:return Icon(Icons.flash_off, color: Colors.grey);
+        //         }
+        //       },
+        //     ),
+        //     onPressed: () => _scannerController.toggleTorch(),
+        //   ),
+        // ],
+      ),
+      body: MobileScanner(
+        controller: _scannerController,
+        onDetect: (capture) {
+          final List<Barcode> barcodes = capture.barcodes;
+          
+          if (barcodes.isNotEmpty) {
+            final Barcode barcode = barcodes.first;
+            
+            // Pop the scanner and return the scanned value
+            Navigator.pop(context, barcode.rawValue);
+          }
+        },
       ),
     );
   }

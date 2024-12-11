@@ -113,6 +113,8 @@ class FlocController extends GetxController {
             shortDescription: object["MASTER_COLUMN5"],
             equipmentNumber: object["BU_DH_CUST_COL53"],
             techId: object["REGISTER_COLUMN6"],
+             floc: object["FLOC"],
+                floc_desc: object["FLOC_DESCRIPTION"],
           ));
         }
         log("adataaaaaa ${result!['apiDataArray'][0]["RECORD_NO"]}");

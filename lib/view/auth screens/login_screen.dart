@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/login_controller.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
+import 'package:pilog_idqm/global/app_styles.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,7 +12,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final LoginController controller = Get.put(LoginController());
 
   @override
@@ -18,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     // Get screen size for responsive design
     final Size screenSize = MediaQuery.of(context).size;
     final bool isTablet = screenSize.width >= 600;
-    
+
     return LoaderOverlay(
       useDefaultLoading: true,
       child: Scaffold(
@@ -28,11 +31,15 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               // Responsive padding based on screen width
               horizontal: screenSize.width * 0.05,
               vertical: 24.0,
+
+
+
+              
             ),
             child: ConstrainedBox(
               // Constrain the maximum width for larger screens
               constraints: const BoxConstraints(maxWidth: 600),
-              child: Column(  
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const SizedBox(height: 20),
@@ -42,23 +49,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     image: const AssetImage("assets/images/PiLog Logo.png"),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    'Welcome Back!',
-                    style: TextStyle(
-                      fontSize: isTablet ? 28 : 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Please login to your account',
-                    style: TextStyle(
-                      fontSize: isTablet ? 16 : 14,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
+                  Text('Welcome Back!',
+                      style: AppStylesCormorant.black(
+                        fontSize: isTablet ? 28 : 24,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  const SizedBox(height: 50),
+
                   buildLoginForm(isTablet),
                 ],
               ),
@@ -73,13 +70,21 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return Card(
       elevation: 0.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: AppColors.blueShadeGradiant)),
       child: Padding(
         padding: EdgeInsets.all(isTablet ? 24.0 : 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Text(
+              'Please login to your account',
+              style: AppStylesCormorant.black(
+                fontSize: isTablet ? 16 : 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 30),
             buildUserNameField(isTablet),
             const SizedBox(height: 16),
             buildPasswordField(isTablet),
@@ -95,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   Widget buildUserNameField(bool isTablet) {
     return SizedBox(
-      height: isTablet ? 45 : 40, // Smaller height for the text field
+      height: isTablet ? 45 : 45, // Smaller height for the text field
       child: TextFormField(
         keyboardType: TextInputType.text,
         onChanged: (value) {
@@ -108,10 +113,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         ),
         decoration: InputDecoration(
           labelText: 'User Name',
-          labelStyle: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: isTablet ? 14 : 13, // Smaller label size
-          ),
+          labelStyle: AppStylesCormorant.black(
+              fontSize: isTablet ? 14 : 13, fontWeight: FontWeight.w500),
           fillColor: Colors.grey[100],
           filled: true,
           contentPadding: const EdgeInsets.symmetric(
@@ -134,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   Widget buildPasswordField(bool isTablet) {
     return SizedBox(
-      height: isTablet ? 45 : 40, // Smaller height for the text field
+      height: isTablet ? 45 : 45, // Smaller height for the text field
       child: TextFormField(
         obscureText: true,
         style: TextStyle(
@@ -148,10 +151,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         controller: controller.passWordText,
         decoration: InputDecoration(
           labelText: 'Password',
-          labelStyle: TextStyle(
-            color: Colors.blueGrey,
-            fontSize: isTablet ? 14 : 13, // Smaller label size
-          ),
+          labelStyle: AppStylesCormorant.black(
+              fontSize: isTablet ? 14 : 13, fontWeight: FontWeight.w500),
           fillColor: Colors.grey[100],
           filled: true,
           contentPadding: const EdgeInsets.symmetric(
@@ -197,7 +198,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   Widget buildLoginButton(bool isTablet) {
     return SizedBox(
-      height: isTablet ? 45 : 40, // Smaller height for the button
+      height: isTablet ? 55 : 50, // Smaller height for the button
+      width: 150,
       child: ElevatedButton(
         onPressed: () async {
           controller.signIn(context);
@@ -205,9 +207,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Smaller border radius
+            borderRadius: BorderRadius.circular(20), // Smaller border radius
           ),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: AppColors.blueShadeGradiant,
           foregroundColor: Colors.white,
           padding: EdgeInsets.zero, // Remove default padding
           textStyle: TextStyle(
