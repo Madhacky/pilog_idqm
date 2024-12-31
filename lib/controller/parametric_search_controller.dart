@@ -128,7 +128,6 @@ TextEditingController get  barcodeScannerController =>  _barcodeController;
         for (var object in result!['apiDataArray']) {
           items.add(object[columnName]);
         }
-        log("adataaaaaa ${items.length}");
         isItemLoaded.value = true;
         update();
         return items;

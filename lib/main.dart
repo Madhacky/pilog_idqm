@@ -6,6 +6,7 @@ import 'package:pilog_idqm/helpers/init_services.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
 import 'package:pilog_idqm/view/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   await InitServices.injectDependencies();
@@ -24,16 +25,18 @@ class MyApp extends StatelessWidget {
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
-        child: GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primaryColor: Colors.purple,
+        child: ToastificationWrapper(
+          child: GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primaryColor: Colors.purple,
+            ),
+            title: "Login App",
+            home: const LoaderOverlay(
+                useDefaultLoading: true,
+               
+                child: ClientMgrHomeScreen()),
           ),
-          title: "Login App",
-          home: const LoaderOverlay(
-              useDefaultLoading: true,
-             
-              child: ClientMgrHomeScreen()),
         ),
       );
     

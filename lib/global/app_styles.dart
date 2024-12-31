@@ -103,6 +103,12 @@ static TextStyle black_15_400 =const TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w400,
 );
+static TextStyle black_15_500 =const TextStyle(
+  color: AppColors.black,
+  fontFamily: AppFont.fontFamily,
+  fontSize: 15,
+  fontWeight: FontWeight.w500,
+);
 static TextStyle black_15_600 =const TextStyle(
   color: AppColors.black,
   fontFamily: AppFont.fontFamily,

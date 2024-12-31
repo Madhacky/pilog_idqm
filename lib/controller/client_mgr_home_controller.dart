@@ -23,6 +23,8 @@ import 'package:pilog_idqm/helpers/api_services.dart';
 import 'package:pilog_idqm/helpers/pdf_viewer.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
+import 'package:pilog_idqm/model/asset_image_model.dart';
+import 'package:pilog_idqm/model/image_upload_response_model.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -182,9 +184,8 @@ class ClientMgrHomeController extends GetxController
       if (await file!.length() <= maxFileSize) {
         log(file!.path);
 
-        if (context.mounted) {
-          uploadImageApi(file, recordNo, context, false);
-        }
+        uploadImageApi(file, recordNo, context, false);
+
         return file;
       } else {
         if (context.mounted) {
@@ -392,13 +393,11 @@ class ClientMgrHomeController extends GetxController
     }
   }
 
-  Future<dynamic> DisplayImage({required String recordNo}) async {
-    // final String host_url = "https://ifar.pilogcloud.com/";
-    // final String reqid = "6085DAB947664BEAB39921AC425BB71A";
-    // final String orgnId = "C1F5CFB03F2E444DAE78ECCEAD80D27D";
-    // final String username =
-    //     (await SharedPreferencesHelper.getUsername())!.toUpperCase();
-
+//fetch image
+  RxList<ApiDataArray> imageList = RxList();
+  Future<AssetImageModel> fetchImage({required String recordNo}) async {
+    imageList.clear();
+    AssetImageModel? imageData;
     var headers = {'Content-Type': 'application/json'};
     var body = json.encode({
       "apiReqId": "6085DAB947664BEAB39921AC425BB71A",
@@ -424,86 +423,111 @@ class ClientMgrHomeController extends GetxController
     if (response.statusCode == 200) {
       try {
         Finaldata = jsonDecode(response.body);
-        print("Image Data: ${Finaldata['apiDataArray']}");
-        return Finaldata;
+        imageData = AssetImageModel.fromJson(Finaldata);
+        log("Image Data: ${imageData.apiDataArray!.length}");
+        update();
+        return imageData;
       } catch (e) {
         log("JSON decode error: $e");
-        return Future.error("JSON decode error: $e");
+        return imageData!;
       }
     } else {
       log("Error: ${response.reasonPhrase}");
-      return Future.error("Error: ${response.reasonPhrase}");
+      return imageData!;
     }
   }
 
 //upload image
-
-// Function to upload image to API
   Future<void> uploadImageApi(File? file, String recordNumber,
       BuildContext context, bool isImage) async {
-    context.loaderOverlay.show();
-    // Convert XFile to File
-    //File file = File(xfile!.path);
-    log(base64Encode(file!.readAsBytesSync()));
-    int randomNo = math.Random().nextInt(1000);
-    String filename = isImage
-        ? "${recordNumber}_img_${randomNo.toString()}.jpg"
-        : "${recordNumber}_pdf_${randomNo.toString()}.pdf";
-
-    var headers = {'Content-Type': 'application/json'};
-    var body = json.encode({
-      "apiReqId": "855A9F8A5A0A43E1BCD2A5C12546AB91",
-      "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
-      "apiAttachFalg": "Y",
-      "apiUpdateFalg": "",
-      "apiInsertFalg": "",
-      "apiDeleteFalg": "",
-      "apiReqUserId": "KT_VBR_MGR",
-      "855A9F8A5A0A43E1BCD2A5C12546AB91": [
-        {
-          "ACTIVE_FLAG": "Y",
-          "FILE_NAME": filename,
-          "REGION": "IN",
-          "LOCALE": "en_US",
-          "DEFAULT_FLAG": "N",
-          "ATTACH_TYPE": "Image",
-          "CONTENT": base64Encode(file.readAsBytesSync()),
-          "ATTACH_EXTENSION": "jpg",
-          "TYPE": "P",
-          "RECORD_NO": recordNumber
-        }
-      ]
-    });
-
     try {
-      var response = await http.post(
+      if (file == null) {
+        if (context.mounted) {
+          ToastCustom.errorToast(context, "No file selected");
+        }
+        return;
+      }
+
+      if (context.mounted) {
+        context.loaderOverlay.show();
+      }
+
+      final String base64Content = base64Encode(await file.readAsBytes());
+      final int randomNo = math.Random().nextInt(1000);
+      final String extension = isImage ? "jpg" : "pdf";
+      final String filename =
+          "${recordNumber}_${isImage ? 'img' : 'pdf'}_$randomNo.$extension";
+
+      final Map<String, dynamic> requestBody = {
+        "apiReqId": "855A9F8A5A0A43E1BCD2A5C12546AB91",
+        "apiReqOrgnId": "1F026AB672B2B6C0E0630400010AF3F9",
+        "apiAttachFalg": "Y",
+        "apiUpdateFalg": "",
+        "apiInsertFalg": "",
+        "apiDeleteFalg": "",
+        "apiReqUserId": "KT_VBR_MGR",
+        "855A9F8A5A0A43E1BCD2A5C12546AB91": [
+          {
+            "ACTIVE_FLAG": "Y",
+            "FILE_NAME": filename,
+            "REGION": "IN",
+            "LOCALE": "en_US",
+            "DEFAULT_FLAG": "N",
+            "ATTACH_TYPE": isImage ? "Image" : "PDF",
+            "CONTENT": base64Content,
+            "ATTACH_EXTENSION": extension,
+            "TYPE": "P",
+            "RECORD_NO": recordNumber
+          }
+        ]
+      };
+
+      final response = await http.post(
         Uri.parse('${host_url}updateInsertApiRequestData'),
-        headers: headers,
-        body: body,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(requestBody),
       );
 
       if (response.statusCode == 200) {
-        if (context.mounted) {
-          context.loaderOverlay.hide();
-          ToastCustom.successToast(context, "Uploaded Successfully");
+        final responseData = json.decode(response.body);
+        final uploadResponse = ImageUploadResponseModel.fromJson(responseData);
+
+          // Refresh the image list
+          final updatedImages = await fetchImage(recordNo: recordNumber);
+          imageList.value = updatedImages.apiDataArray ?? [];
+
+          if (context.mounted) {
+            ToastCustom.successToast(context, "Uploaded Successfully");
+          
+        } else {
+          if (context.mounted) {
+            ToastCustom.errorToast(
+                context, uploadResponse.message ?? "Upload failed");
+          }
         }
-        print("Upload successful: ${response.body}");
       } else {
         if (context.mounted) {
-          context.loaderOverlay.hide();
-          ToastCustom.errorToast(context, "Uploaded failed");
+          ToastCustom.errorToast(
+              context, "Upload failed: ${response.reasonPhrase}");
         }
-        print("Failed: ${response.reasonPhrase}");
       }
     } catch (e) {
-      print("Error: $e");
+      if (context.mounted) {
+        ToastCustom.errorToast(context, "Error uploading file: $e");
+      }
+      print("Error in uploadImageApi: $e");
+    } finally {
+      if (context.mounted) {
+        context.loaderOverlay.hide();
+      }
     }
   }
 
 //delete image api
   Future<void> imageDeleteApi(
-      String auditID, String recordNo, BuildContext context) async {
-    context.loaderOverlay.show();
+      String auditID, String recordNo, BuildContext context, int index) async {
+    // Ensure the list is not cleared unintentionally
+    // imageList.clear(); // Uncomment only if necessary
 
     var dictParameter = {
       "apiReqId": "9B7DB8414A274A0EB1133E5FFF9F3BAC",
@@ -518,31 +542,27 @@ class ClientMgrHomeController extends GetxController
       ]
     };
 
-    // Call the requestPostForApi method
+    // Call the API
     var response = await ApiServices().requestPostForApi(
       url: '${host_url}updateInsertApiRequestData',
       dictParameter: dictParameter,
-      authToken: false, // Adjust as needed for your auth token requirement
+      authToken: false,
     );
 
     if (response != null && response.statusCode == 200) {
-      if (context.mounted) {
-        ToastCustom.successToast(context, "Deleted Successfully");
-        context.loaderOverlay.hide();
-        Navigator.pop(context);
+      ToastCustom.successToast(context, "Deleted Successfully");
+
+      // Check bounds before removal
+      if (index >= 0 && index < imageList.length) {
+        imageList.removeAt(index);
+        update();
+      } else {
+        ToastCustom.errorToast(context, "Invalid index for deletion");
       }
     } else {
-      if (context.mounted) {
-        ToastCustom.errorToast(context, "Failed to delete");
-        context.loaderOverlay.hide();
-        Navigator.pop(context);
-      }
+      ToastCustom.errorToast(context, "Failed to delete");
     }
   }
-
-//parametric search
-  Future<void> parametricSearchApi(
-      String auditID, BuildContext context) async {}
 
   //logout api
   Future<void> logoutAPI(

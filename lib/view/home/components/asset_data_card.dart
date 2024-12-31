@@ -1,6 +1,7 @@
 import 'dart:convert'; // For JSON encoding
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pilog_idqm/view/home/asset_detail/asset_detail_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pilog_idqm/view/home/components/assest_details_screen.dart';
 
@@ -98,7 +99,7 @@ class _AssetDataCardState extends State<AssetDataCard> {
       onTap: () => Navigator.push(
         context,
         CupertinoPageRoute<bool>(
-          builder: (_) => AssetDetailsScreen(
+          builder: (_) => AssetDetailScreen(
             classTerm: widget.classTerm,
             longDesc: widget.longDesc,
             recordNo: widget.recordNo,
