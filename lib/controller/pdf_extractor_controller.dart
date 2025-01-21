@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pilog_idqm/model/gemini_response_model.dart';
@@ -9,6 +10,14 @@ import 'dart:convert';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PdfController extends GetxController {
+
+    static late String gemini_key;
+  @override
+  void onInit() {
+    super.onInit();
+    gemini_key = dotenv.get("OPEN_API");
+  }
+
   String? _pdfText;
   String? _summary;
   bool _isLoading = false;
@@ -70,7 +79,7 @@ class PdfController extends GetxController {
 
       final response = await http.post(
         Uri.parse(
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCMXNEEcbbGqMYLI1r9WIst8Ud7omtpY4w'), // Replace with Gemini AI's endpoint
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$gemini_key'), // Replace with Gemini AI's endpoint
         headers: {
           'Content-Type': 'application/json',
         },
