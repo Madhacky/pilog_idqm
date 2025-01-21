@@ -19,14 +19,15 @@ class AssetDetailAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: AppStyles.black_20_600,
-      ),
+      ),  
       backgroundColor: Colors.transparent,
       bottom: TabBar(
-        controller: tabController,
+        controller: tabController,  isScrollable: true, 
         tabs: const [
           Tab(text: "Information"),
           Tab(text: "Attachments"),
-          Tab(text: "Pdf Summary Extractor",)
+          Tab(text: "Pdf Summary Extractor",),
+          Tab(text: "Location(GPS)",)
         ],
         labelColor: AppColors.absoluteBlack,
         indicatorColor: AppColors.blueShadeGradiant,

@@ -7,7 +7,9 @@ import 'package:pilog_idqm/helpers/api_services.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/model/login_model.dart';
+import 'package:pilog_idqm/view/home/components/home_content.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
+
 
 class LoginController extends GetxController {
   static late String host_url;
@@ -63,7 +65,7 @@ class LoginController extends GetxController {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ClientMgrHomeScreen(),
+              builder: (context) => const HomeScreen(),
             ),
           );
         }

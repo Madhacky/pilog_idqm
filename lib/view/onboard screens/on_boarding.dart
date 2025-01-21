@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
-import 'package:pilog_idqm/view/home/home_screen.dart';
 
 
 class OnboardingScreen extends StatelessWidget {

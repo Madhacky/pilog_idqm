@@ -4,14 +4,13 @@ import 'dart:async'; // For Timer
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_styles.dart';
 import 'dart:ui' as ui;
 
 import 'package:url_launcher/url_launcher.dart';
 
-class LocationScreen extends StatefulWidget {
+class LocationTab extends StatefulWidget {
   final void Function(double latitude, double longitude) onLocationSelected;
   final String? assetName;
   final String? equipmentNo;
@@ -21,7 +20,7 @@ class LocationScreen extends StatefulWidget {
   final String? recordNo;
   final String? status;
 
-  const LocationScreen({
+  const LocationTab({
     super.key,
     required this.onLocationSelected,
     this.assetName,
@@ -34,10 +33,10 @@ class LocationScreen extends StatefulWidget {
   });
 
   @override
-  _LocationScreenState createState() => _LocationScreenState();
+  _LocationTabState createState() => _LocationTabState();
 }
 
-class _LocationScreenState extends State<LocationScreen> {
+class _LocationTabState extends State<LocationTab> {
   BitmapDescriptor? normalMarker;
   BitmapDescriptor? shiningMarker;
   bool isShining = false;
@@ -149,14 +148,14 @@ class _LocationScreenState extends State<LocationScreen> {
     homeController.getLocation();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF0F9D58),
-        title: Text(
-          "Asset Locator",
-          style: AppStyles.black_20_600,
-        ),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xFF0F9D58),
+      //   title: Text(
+      //     "Asset Locator",
+      //     style: AppStyles.black_20_600,
+      //   ),
+      //   centerTitle: true,
+      // ),
       body: Stack(
         children: [
           // Google Map widget
@@ -167,13 +166,13 @@ class _LocationScreenState extends State<LocationScreen> {
                     homeController.longitude.value),
                 zoom: 17,
               ),
-              mapType: MapType.satellite,
+              mapType: MapType.normal,
               myLocationEnabled: true,
               compassEnabled: true,
               onMapCreated: (GoogleMapController controller) {
                 homeController.setGoogleMapController(controller);
               },
-              minMaxZoomPreference: const MinMaxZoomPreference(17, 22),
+            //  minMaxZoomPreference: const MinMaxZoomPreference(17, 22),
               markers: {
                 if (widget.lat != null && widget.long != null)
                 Marker(

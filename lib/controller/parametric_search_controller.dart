@@ -338,15 +338,23 @@ TextEditingController get  barcodeScannerController =>  _barcodeController;
         var result = jsonDecode(response!.data.toString());
         for (var object in result!['apiDataArray']) {
           assetCardList.add(AssetDataCard(
-            classTerm: object["CLASS_TERM"],
-            longDesc: object["MASTER_COLUMN6"],
-            recordNo: object["RECORD_NO"],
-            status: object["STATUS"],
-            shortDescription: object["MASTER_COLUMN5"],
-            equipmentNumber: object["BU_DH_CUST_COL53"],
-            techId: object["REGISTER_COLUMN6"],
-             floc: object["FLOC"],
-                floc_desc: object["FLOC_DESCRIPTION"],
+            data: AssetData(
+              classTerm: object["CLASS_TERM"],
+              longDesc: object["MASTER_COLUMN6"],
+              recordNo: object["RECORD_NO"],
+              status: object["STATUS"],
+              shortDescription: object["MASTER_COLUMN5"],
+              equipmentNumber: object["BU_DH_CUST_COL53"],
+              techId: object["REGISTER_COLUMN6"],
+              lat: object["BU_DH_CUST_COL34"] == null
+                  ? null
+                  : object["BU_DH_CUST_COL34"].toString().split(',')[0],
+              long: object["BU_DH_CUST_COL34"] == null
+                  ? null
+                  : object["BU_DH_CUST_COL34"].toString().split(',')[1],
+              floc: object["FLOC"],
+              flocDesc: object["FLOC_DESCRIPTION"],
+            ),
           ));
         }
         log("adataaaaaa ${result!['apiDataArray'][0]["RECORD_NO"]}");

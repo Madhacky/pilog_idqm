@@ -17,27 +17,32 @@ class AttachmentsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(  // Wrap with Scaffold to properly handle FAB
-    backgroundColor: AppColors.absoluteWhite,
+    return Scaffold(
+      // Wrap with Scaffold to properly handle FAB
+      backgroundColor: AppColors.absoluteWhite,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: FutureBuilder<AssetImageModel>(
           future: controller.fetchImage(recordNo: recordNo),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: AppColors.blueShadeGradiant,
+              ));
             }
-            
+
             if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             }
-            
+
             if (!snapshot.hasData || snapshot.data!.apiDataArray!.isEmpty) {
               return _buildEmptyState(context);
             }
 
             if (controller.imageList.isEmpty) {
-              controller.imageList.value = snapshot.data!.apiDataArray!.toList();
+              controller.imageList.value =
+                  snapshot.data!.apiDataArray!.toList();
             }
 
             return AttachmentList(controller: controller, recordNo: recordNo);
@@ -46,7 +51,8 @@ class AttachmentsTab extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.blueShadeGradiant,
-        onPressed: () => showUploadAttachmentDialog(context, controller, recordNo),
+        onPressed: () =>
+            showUploadAttachmentDialog(context, controller, recordNo),
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
@@ -59,7 +65,8 @@ class AttachmentsTab extends StatelessWidget {
         children: [
           const Text('No attachments available'),
           MaterialButton(
-            onPressed: () => showUploadAttachmentDialog(context, controller, recordNo),
+            onPressed: () =>
+                showUploadAttachmentDialog(context, controller, recordNo),
             child: const Text("Add Attachments"),
           ),
         ],

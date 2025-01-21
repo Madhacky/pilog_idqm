@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/helpers/url_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,15 +17,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: AppColors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff7165E3),
+        backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
+        leading:     IconButton(
+                            onPressed: () {Navigator.pop(context);},
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
         title: const Text('Settings',
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 22,
                 fontWeight: FontWeight.w600)),
       ),

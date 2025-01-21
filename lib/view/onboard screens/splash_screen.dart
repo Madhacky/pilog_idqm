@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
+import 'package:pilog_idqm/view/home/components/home_content.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
-import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
 import 'package:pilog_idqm/view/onboard%20screens/on_boarding.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       isLoggedIn
           ? Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const ClientMgrHomeScreen()),
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
             )
           : Navigator.pushReplacement(
               context,

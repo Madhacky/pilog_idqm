@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pilog_idqm/controller/floc_controller.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/global/app_styles.dart';
 import 'package:pilog_idqm/view/floc%20search/floc_search_result.dart';
 import 'package:shimmer/shimmer.dart';
@@ -31,14 +32,20 @@ class _FLOCOperationState extends State<FLOCOperation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: AppColors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.white,
+        elevation: 0,
         centerTitle: true,
-        title: Text(
-          'FLOC Search',
-          style: AppStyles.black_20_600,
-        ),
-        backgroundColor: const Color(0xff7165E3), // AppBar background color
+        leading:     IconButton(
+                            onPressed: () {Navigator.pop(context);},
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
+        title: const Text('Floc Search',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 22,
+                fontWeight: FontWeight.w600)),
       ),
       body: Column(
         children: [
@@ -128,8 +135,7 @@ class _FLOCOperationState extends State<FLOCOperation> {
                         horizontal: 16.0,
                         vertical: 8.0), // Content padding inside the ListTile
                     leading: CircleAvatar(
-                      backgroundColor: const Color(
-                          0xff7165E3), // Custom background color for avatar
+                      backgroundColor:  AppColors.blueShadeGradiant, // Custom background color for avatar
                       foregroundColor: Colors.white,
                       child: Text(entry.key[0].toUpperCase()),
                     ),

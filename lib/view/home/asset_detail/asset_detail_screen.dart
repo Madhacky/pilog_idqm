@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
-import 'package:pilog_idqm/view/home/asset_detail/tabs/pdf_summary_extractor.dart';
+import 'package:pilog_idqm/view/home/asset_detail/tabs/location_tab.dart';
+import 'package:pilog_idqm/view/home/asset_detail/tabs/pdf_summary_extractor/pdf_summary_screen.dart';
 import 'tabs/information_tab.dart';
 import 'tabs/attachments_tab.dart';
 import 'widgets/asset_detail_app_bar.dart';
@@ -38,14 +39,16 @@ class AssetDetailScreen extends StatefulWidget {
   State<AssetDetailScreen> createState() => _AssetDetailScreenState();
 }
 
-class _AssetDetailScreenState extends State<AssetDetailScreen> with SingleTickerProviderStateMixin {
-  final ClientMgrHomeController controller = Get.find<ClientMgrHomeController>();
+class _AssetDetailScreenState extends State<AssetDetailScreen>
+    with SingleTickerProviderStateMixin {
+  final ClientMgrHomeController controller =
+      Get.find<ClientMgrHomeController>();
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length:4 , vsync: this);
   }
 
   @override
@@ -64,7 +67,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> with SingleTicker
       ),
       body: LoaderOverlay(
         useDefaultLoading: true,
-        child: TabBarView(
+        child: TabBarView(physics: NeverScrollableScrollPhysics(),
           controller: _tabController,
           children: [
             InformationTab(
@@ -80,7 +83,16 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> with SingleTicker
               recordNo: widget.recordNo ?? '',
               controller: controller,
             ),
-             PdfSummaryScreen()
+            const PdfSummaryScreen(),
+            LocationTab(
+              onLocationSelected: (latitude, longitude) {},
+              assetName: widget.classTerm,
+              equipmentNo: widget.equipmentNo,
+              lat: widget.lat,
+              long: widget.lng,
+              recordNo: widget.recordNo,
+              status: widget.status,
+            )
           ],
         ),
       ),

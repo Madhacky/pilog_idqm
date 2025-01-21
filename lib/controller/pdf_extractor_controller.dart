@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pilog_idqm/model/gemini_response_model.dart';
 import 'dart:convert';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -16,7 +18,9 @@ class PdfController extends GetxController {
   String? get summary => _summary;
   bool get isLoading => _isLoading;
   File? get selectedFile => _selectedFile;
-
+  set setSelectedFile(File file) {
+    _selectedFile = file;
+  }
   Future<void> pickPDF() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -34,14 +38,15 @@ class PdfController extends GetxController {
     }
   }
 
-  Future<void> extractText() async {                                                          
+  Future<void> extractText() async {
     if (_selectedFile == null) return;
 
     try {
       _isLoading = true;
       update();
 
-      final PdfDocument document = PdfDocument(inputBytes: await _selectedFile!.readAsBytes());
+      final PdfDocument document =
+          PdfDocument(inputBytes: await _selectedFile!.readAsBytes());
       PdfTextExtractor extractor = PdfTextExtractor(document);
       _pdfText = extractor.extractText();
       document.dispose();
@@ -56,6 +61,7 @@ class PdfController extends GetxController {
   }
 
   Future<void> generateSummary() async {
+    GeminiResponseModel? geminiResponseModel;
     if (_pdfText == null) return;
 
     try {
@@ -63,32 +69,35 @@ class PdfController extends GetxController {
       update();
 
       final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/chat/completions'),
+        Uri.parse(
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCMXNEEcbbGqMYLI1r9WIst8Ud7omtpY4w'), // Replace with Gemini AI's endpoint
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', // Replace with your API key
         },
         body: jsonEncode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
+          "contents": [
             {
-              'role': 'system',
-              'content': 'You are a helpful assistant that generates concise summaries.'
-            },
-            {
-              'role': 'user',
-              'content': 'Please provide a concise summary of the following text: $_pdfText'
+              "parts": [
+                {
+                  "text":
+                      "Generate a concise summary of the following text: $_pdfText'"
+                }
+              ]
             }
-          ],
-          'max_tokens': 500,
+          ]
         }),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        _summary = data['choices'][0]['message']['content'];
+      //  geminiResponseModel = GeminiResponseModel.fromJson(data);
+        log(data["candidates"][0]["content"]["parts"][0]["text"]);
+        // Adjust this based on the structure of Gemini AI's response
+        _summary = data["candidates"][0]["content"]["parts"][0]["text"];
       } else {
-        throw Exception('Failed to generate summary');
+        final errorData = jsonDecode(response.body);
+        throw Exception(
+            'Failed to generate summary: ${errorData['error']['message']}');
       }
     } catch (e) {
       debugPrint('Error generating summary: $e');

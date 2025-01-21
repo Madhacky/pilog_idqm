@@ -7,26 +7,24 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:pilog_idqm/global/widgets/stacked_card.dart';
 
 import 'package:pilog_idqm/helpers/api_services.dart';
-import 'package:pilog_idqm/helpers/pdf_viewer.dart';
+import 'package:pilog_idqm/global/widgets/pdf_scanner/pdf_viewer.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/model/asset_image_model.dart';
 import 'package:pilog_idqm/model/image_upload_response_model.dart';
-import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
+import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientMgrHomeController extends GetxController
@@ -247,7 +245,7 @@ class ClientMgrHomeController extends GetxController
           context,
           CupertinoPageRoute<bool>(
               builder: (_) => PDFScreen(
-                    pdfPath: file.path,
+                    pdfPath: file.path, fileName: fileName,
                     //   fileName: fileName,
                   )));
     }
@@ -326,21 +324,23 @@ class ClientMgrHomeController extends GetxController
         var result = jsonDecode(response!.data.toString());
         for (var object in result!['apiDataArray']) {
           assetCardList.add(AssetDataCard(
-            classTerm: object["CLASS_TERM"],
-            longDesc: object["MASTER_COLUMN6"],
-            recordNo: object["RECORD_NO"],
-            status: object["STATUS"],
-            shortDescription: object["MASTER_COLUMN5"],
-            equipmentNumber: object["BU_DH_CUST_COL53"],
-            techId: object["REGISTER_COLUMN6"],
-            lat: object["BU_DH_CUST_COL34"] == null
-                ? null
-                : object["BU_DH_CUST_COL34"].toString().split(',')[0],
-            long: object["BU_DH_CUST_COL34"] == null
-                ? null
-                : object["BU_DH_CUST_COL34"].toString().split(',')[1],
-            floc: object["FLOC"],
-            floc_desc: object["FLOC_DESCRIPTION"],
+            data: AssetData(
+              classTerm: object["CLASS_TERM"],
+              longDesc: object["MASTER_COLUMN6"],
+              recordNo: object["RECORD_NO"],
+              status: object["STATUS"],
+              shortDescription: object["MASTER_COLUMN5"],
+              equipmentNumber: object["BU_DH_CUST_COL53"],
+              techId: object["REGISTER_COLUMN6"],
+              lat: object["BU_DH_CUST_COL34"] == null
+                  ? null
+                  : object["BU_DH_CUST_COL34"].toString().split(',')[0],
+              long: object["BU_DH_CUST_COL34"] == null
+                  ? null
+                  : object["BU_DH_CUST_COL34"].toString().split(',')[1],
+              floc: object["FLOC"],
+              flocDesc: object["FLOC_DESCRIPTION"],
+            ),
           ));
         }
         log("adataaaaaa ${result!['apiDataArray'][0]["RECORD_NO"]}");
@@ -473,9 +473,9 @@ class ClientMgrHomeController extends GetxController
             "REGION": "IN",
             "LOCALE": "en_US",
             "DEFAULT_FLAG": "N",
-            "ATTACH_TYPE": isImage ? "Image" : "PDF",
+            "ATTACH_TYPE": "Image",
             "CONTENT": base64Content,
-            "ATTACH_EXTENSION": extension,
+            "ATTACH_EXTENSION": "jpg",
             "TYPE": "P",
             "RECORD_NO": recordNumber
           }
@@ -492,13 +492,12 @@ class ClientMgrHomeController extends GetxController
         final responseData = json.decode(response.body);
         final uploadResponse = ImageUploadResponseModel.fromJson(responseData);
 
-          // Refresh the image list
-          final updatedImages = await fetchImage(recordNo: recordNumber);
-          imageList.value = updatedImages.apiDataArray ?? [];
+        // Refresh the image list
+        final updatedImages = await fetchImage(recordNo: recordNumber);
+        imageList.value = updatedImages.apiDataArray ?? [];
 
-          if (context.mounted) {
-            ToastCustom.successToast(context, "Uploaded Successfully");
-          
+        if (context.mounted) {
+          ToastCustom.successToast(context, "Uploaded Successfully");
         } else {
           if (context.mounted) {
             ToastCustom.errorToast(
@@ -550,17 +549,19 @@ class ClientMgrHomeController extends GetxController
     );
 
     if (response != null && response.statusCode == 200) {
-      ToastCustom.successToast(context, "Deleted Successfully");
-
+       ToastCustom.successToast(context, "Deleted Successfully");
+      log("Deleted Successfully");
       // Check bounds before removal
       if (index >= 0 && index < imageList.length) {
         imageList.removeAt(index);
         update();
       } else {
-        ToastCustom.errorToast(context, "Invalid index for deletion");
+         ToastCustom.errorToast(context, "Invalid index for deletion");
+          // log("Deleted Successfullyssssss");
       }
     } else {
-      ToastCustom.errorToast(context, "Failed to delete");
+      // ToastCustom.errorToast(context, "Failed to delete");
+         log("Data failed ");
     }
   }
 

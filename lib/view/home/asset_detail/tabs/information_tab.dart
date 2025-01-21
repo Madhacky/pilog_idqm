@@ -52,7 +52,7 @@ class InformationTab extends StatelessWidget {
       {required List<Widget> children, required String cardHeadTitle}) {
     return Card(elevation: 0,
     color: AppColors.absoluteWhite,
-      shape: const RoundedRectangleBorder(side: BorderSide(color: AppColors.blueShadeGradiant,),
+      shape: const RoundedRectangleBorder(side: BorderSide(color: AppColors.black87,),
           borderRadius: BorderRadius.all(Radius.circular(15))),
       child: Padding(
         padding: const EdgeInsets.all(12.0),

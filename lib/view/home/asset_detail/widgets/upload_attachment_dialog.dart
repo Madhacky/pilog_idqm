@@ -106,7 +106,7 @@ Future<void> showUploadAttachmentDialog(
                     backgroundColor: AppColors.blueShadeGradiant,
                   ),
                   onPressed: () async {
-                   
+                    Navigator.pop(context);
                     await controller.pickPdfUnder4MB(context, recordNo);
                   },
                   icon: const Icon(Icons.file_upload, color: Colors.white),

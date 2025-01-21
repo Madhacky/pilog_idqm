@@ -20,10 +20,20 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: AppColors.white,
       appBar: AppBar(
-        title: Text("Parametric Search"),
-        backgroundColor: Color(0xff7165E3),
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        centerTitle: true,
+        leading:     IconButton(
+                            onPressed: () {Navigator.pop(context);},
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
+        title: const Text('Parametric Search',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 22,
+                fontWeight: FontWeight.w600)),
       ),
       body: SingleChildScrollView(
         child: Padding(

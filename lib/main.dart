@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/helpers/init_services.dart';
-import 'package:pilog_idqm/view/home/home_screen.dart';
-import 'package:pilog_idqm/view/splash_screen.dart';
+import 'package:pilog_idqm/view/onboard%20screens/app_loader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: ToastificationWrapper(
-          child: GetMaterialApp(
+          child: GetMaterialApp( 
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor: Colors.purple,
@@ -35,7 +33,7 @@ class MyApp extends StatelessWidget {
             home: const LoaderOverlay(
                 useDefaultLoading: true,
                
-                child: ClientMgrHomeScreen()),
+                child: AppLoader()),
           ),
         ),
       );
