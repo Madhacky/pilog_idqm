@@ -109,7 +109,8 @@ Widget _buildListView() {
             padding:
                 const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
             child: Card(
-              elevation: 6,
+                  color: AppColors.white,
+      elevation: 5,shadowColor: AppColors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),

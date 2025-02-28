@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
+import 'package:pilog_idqm/helpers/search_stats_manager.dart';
 import 'package:pilog_idqm/view/home/components/home_loading_shimmer.dart';
 import 'animated_search_bar.dart';
 import 'asset_grid.dart';
 import 'welcome_animation.dart';
 
 class HomeContent extends StatelessWidget {
+    final SearchAnalyticsService analyticsService;
   const HomeContent({
-    super.key,
+    super.key, required this.analyticsService,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isTablet = MediaQuery.of(context).size.shortestSide > 600;
-
     return PopScope(
         canPop: true,
         child: GetBuilder<ClientMgrHomeController>(
@@ -34,7 +35,7 @@ class HomeContent extends StatelessWidget {
                         IconButton(
                             onPressed: () {Navigator.pop(context);},
                             icon: const Icon(Icons.arrow_back_ios_new_rounded)),
-                        AnimatedSearchBar(controller: controller),
+                        AnimatedSearchBar(controller: controller, analyticsService: analyticsService),
                       ],
                     ),
                   ),

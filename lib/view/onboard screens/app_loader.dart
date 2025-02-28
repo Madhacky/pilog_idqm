@@ -79,7 +79,7 @@ class _AppLoaderState extends State<AppLoader> with SingleTickerProviderStateMix
           ? Navigator.of(context).pushReplacement(
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                    const HomeScreen(),
+                     HomeScreen(),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                   return Stack(
                     children: [
@@ -133,15 +133,15 @@ class _AppLoaderState extends State<AppLoader> with SingleTickerProviderStateMix
       backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.blueShadeGradiant,
-              Colors.white,
-              Colors.blue.shade50,
-            ],
-          ),
+          // gradient: LinearGradient(
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
+          //   colors: [
+          //     AppColors.blueShadeGradiant,
+          //     Colors.white,
+          //     Colors.blue.shade50,
+          //   ],
+          // ),
         ),
         child: AnimatedBuilder(
           animation: _controller,
@@ -149,28 +149,28 @@ class _AppLoaderState extends State<AppLoader> with SingleTickerProviderStateMix
             return Stack(
               children: [
                 // Background animated circles
-                Positioned(
-                  top: 100,
-                  right: 50,
-                  child: AnimatedBuilder(
-                    animation: _rotateAnimation,
-                    builder: (context, child) {
-                      return Transform.rotate(
-                        angle: _rotateAnimation.value * 3.14,
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: RadialGradient(
-                              colors: [AppColors.blueShadeGradiant.withOpacity(0.2), Colors.transparent],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                // Positioned(
+                //   top: 100,
+                //   right: 50,
+                //   child: AnimatedBuilder(
+                //     animation: _rotateAnimation,
+                //     builder: (context, child) {
+                //       return Transform.rotate(
+                //         angle: _rotateAnimation.value * 3.14,
+                //         child: Container(
+                //           width: 100,
+                //           height: 100,
+                //           decoration: BoxDecoration(
+                //             shape: BoxShape.circle,
+                //             gradient: RadialGradient(
+                //               colors: [AppColors.blueShadeGradiant.withOpacity(0.2), Colors.transparent],
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -3,7 +3,6 @@ import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/helpers/url_launcher.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -44,7 +43,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   "https://www.piloggroup.com/privacy-policy.php");
             },
           ),
-          const Divider(color: Colors.grey),
           SettingsTile(
             icon: Icons.info_outline,
             title: 'About Us',
@@ -53,7 +51,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   "https://www.piloggroup.com");
             },
           ),
-          const Divider(color: Colors.grey),
          
           SettingsTile(
             icon: Icons.security,
@@ -63,7 +60,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
          
-          const Divider(color: Colors.grey),
           SettingsTile(
             icon: Icons.help_outline,
             title: 'Help & Support',
@@ -101,18 +97,24 @@ class SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12))),
-      leading: Icon(icon, color: const Color(0xff7165E3)),
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16, color: Colors.black87),
+    return Card(
+      elevation: 5,
+      color: AppColors.white,
+      shadowColor: AppColors.white,
+
+      child: ListTile(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        leading: Icon(icon, color: AppColors.blueShadeGradiant),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 16, color: Colors.black87),
+        ),
+        trailing: trailing ??
+            const Icon(Icons.arrow_forward_ios,
+                color:AppColors.blueShadeGradiant, size: 16),
+        onTap: onTap,
       ),
-      trailing: trailing ??
-          const Icon(Icons.arrow_forward_ios,
-              color: Color(0xff7165E3), size: 16),
-      onTap: onTap,
     );
   }
 }

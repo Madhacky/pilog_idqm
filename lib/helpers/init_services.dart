@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 
 class InitServices {
+ 
   static injectDependencies() async {
     await injectdotEnv();
     Get.put(ClientMgrHomeController());
@@ -11,4 +12,5 @@ class InitServices {
   static injectdotEnv() async {
     await dotenv.load(fileName: ".env");
   }
+
 }

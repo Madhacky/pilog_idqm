@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilog_idqm/controller/floc_controller.dart';
 import 'package:pilog_idqm/controller/parametric_search_controller.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/view/home/components/asset_data_card.dart';
 import 'package:pilog_idqm/view/home/components/home_loading_shimmer.dart';
 
@@ -28,11 +29,21 @@ class _FlocSearchResultScreenState extends State<FlocSearchResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: AppColors.white,
         appBar: AppBar(
-          title: const Text("FLOC Search Results"),
-          backgroundColor: const Color(0xff7165E3),
-        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        centerTitle: true,
+        leading:     IconButton(
+                            onPressed: () {Navigator.pop(context);},
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
+        title: const Text('FLOC Search Results',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 22,
+                fontWeight: FontWeight.w600)),
+      ),
         body: FutureBuilder<List<AssetDataCard>>(
           future: controller!.getFlocSearchResultFuture,
           builder: (context, snapshot) {

@@ -126,7 +126,8 @@ class _FLOCOperationState extends State<FLOCOperation> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
                 child: Card(
-                  elevation: 4.0, // Elevation for shadow
+                       color: AppColors.white,
+      elevation: 5,shadowColor: AppColors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
@@ -165,10 +166,11 @@ class _FLOCOperationState extends State<FLOCOperation> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
           child: Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
+            baseColor: Colors.grey[200]!,
             highlightColor: Colors.grey[100]!,
             child: Card(
-              elevation: 4.0,
+                   color: AppColors.white,
+      elevation: 5,shadowColor: AppColors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),

@@ -20,15 +20,18 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: AppColors.white,
+    return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
-        leading:     IconButton(
-                            onPressed: () {Navigator.pop(context);},
-                            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
         title: const Text('Parametric Search',
             style: TextStyle(
                 color: Colors.black,
@@ -41,71 +44,50 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
           child: Column(
             children: [
               // MDRM Number Row
-              buildSearchCard(
-                'MDRM Number', 
-                controller.selectedMdrmOperator,
-                (value) => controller.selectedMdrmOperator.value = value!,
-                (value) {
-                  controller.selectedMdrmValue.value = value ?? "";
-                  controller.mdrmTextController.text = value ?? ''; 
-                }, 
-                controller.mdrmNumbers, 
-                controller.mdrmTextController, 
-                context,
-                controller.isMdrmNumbersLoaded
-              ),
+              buildSearchCard('MDRM Number', controller.selectedMdrmOperator,
+                  (value) => controller.selectedMdrmOperator.value = value!,
+                  (value) {
+                controller.selectedMdrmValue.value = value ?? "";
+                controller.mdrmTextController.text = value ?? '';
+              }, controller.mdrmNumbers, controller.mdrmTextController, context,
+                  controller.isMdrmNumbersLoaded),
               const SizedBox(height: 16),
 
               // Equipment Number Row
               buildSearchCard(
-                'Equipment Number',
-                controller.selectedEquipmentOperator,
-                (value) => controller.selectedEquipmentOperator.value = value!, 
-                (value) {
-                  controller.selectedEquipmentValue.value = value ?? "";
-                  controller.equipmentTextController.text = value ?? ''; 
-                },
-                controller.equipmentNumbers,
-                controller.equipmentTextController,
-                context,
-                controller.isequipmentNumbersLoaded
-              ),
+                  'Equipment Number',
+                  controller.selectedEquipmentOperator,
+                  (value) => controller.selectedEquipmentOperator.value =
+                      value!, (value) {
+                controller.selectedEquipmentValue.value = value ?? "";
+                controller.equipmentTextController.text = value ?? '';
+              },
+                  controller.equipmentNumbers,
+                  controller.equipmentTextController,
+                  context,
+                  controller.isequipmentNumbersLoaded),
               const SizedBox(height: 16),
 
               // Tech ID Row
-              buildSearchCard(
-                'Tech ID', 
-                controller.selectedTechIDOperator,
-                (value) => controller.selectedTechIDOperator.value = value!,
-                (value) {
-                  controller.selectedTechIDValue.value = value ?? "";
-                  controller.techIDTextController.text = value ?? ''; 
-                }, 
-                controller.techIds, 
-                controller.techIDTextController, 
-                context,
-                controller.istechIdsLoaded
-              ),
+              buildSearchCard('Tech ID', controller.selectedTechIDOperator,
+                  (value) => controller.selectedTechIDOperator.value = value!,
+                  (value) {
+                controller.selectedTechIDValue.value = value ?? "";
+                controller.techIDTextController.text = value ?? '';
+              }, controller.techIds, controller.techIDTextController, context,
+                  controller.istechIdsLoaded),
               const SizedBox(height: 16),
 
               // FLOC Row
-              buildSearchCard(
-                'FLOC', 
-                controller.selectedFLOCOperator,
-                (value) => controller.selectedFLOCOperator.value = value!,
-                (value) {
-                  controller.selectedFLOCValue.value = value ?? "";
-                  controller.flocTextController.text = value ?? ''; 
-                }, 
-                controller.flocs, 
-                controller.flocTextController, 
-                context,
-                controller.isflocsLoaded
-              ),
+              buildSearchCard('FLOC', controller.selectedFLOCOperator,
+                  (value) => controller.selectedFLOCOperator.value = value!,
+                  (value) {
+                controller.selectedFLOCValue.value = value ?? "";
+                controller.flocTextController.text = value ?? '';
+              }, controller.flocs, controller.flocTextController, context,
+                  controller.isflocsLoaded),
               const SizedBox(height: 16),
 
-   
-           
               const SizedBox(height: 16),
 
               // Barcode Scanner Row
@@ -117,7 +99,8 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
                 onPressed: () => controller.performSearch(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff303030),
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
                 child: Text(
                   'Search',
@@ -134,7 +117,9 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
   // Barcode Scanner Widget
   Widget buildBarcodeScanner() {
     return Card(
-      elevation: 4,
+      color: AppColors.white,
+      elevation: 5,
+      shadowColor: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -150,9 +135,8 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
               ),
             ),
             IconButton(
-              onPressed: () => scanBarcode(context),
-              icon: const Icon(CupertinoIcons.doc_text_viewfinder)
-            )
+                onPressed: () => scanBarcode(context),
+                icon: const Icon(CupertinoIcons.doc_text_viewfinder))
           ],
         ),
       ),
@@ -176,17 +160,18 @@ class _ParametricSearchScreenState extends State<ParametricSearchScreen> {
 
   // Reusable Search Card Widget
   Widget buildSearchCard(
-    String label,
-    RxString selectedOperator,
-    ValueChanged<String?> operatorChanged,
-    ValueChanged<String?> onItemSelected,
-    List<String> items,
-    TextEditingController textController,
-    BuildContext context,
-    RxBool isItemLoaded
-  ) {
+      String label,
+      RxString selectedOperator,
+      ValueChanged<String?> operatorChanged,
+      ValueChanged<String?> onItemSelected,
+      List<String> items,
+      TextEditingController textController,
+      BuildContext context,
+      RxBool isItemLoaded) {
     return Card(
-      elevation: 4,
+      color: AppColors.white,
+      elevation: 5,
+      shadowColor: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -318,10 +303,10 @@ class _BarcodeScannerPageState extends State<BarcodeScannerPage> {
         controller: _scannerController,
         onDetect: (capture) {
           final List<Barcode> barcodes = capture.barcodes;
-          
+
           if (barcodes.isNotEmpty) {
             final Barcode barcode = barcodes.first;
-            
+
             // Pop the scanner and return the scanned value
             Navigator.pop(context, barcode.rawValue);
           }

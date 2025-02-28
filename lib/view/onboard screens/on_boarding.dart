@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:pilog_idqm/view/auth%20screens/login_screen.dart';
 
 
@@ -9,14 +10,14 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntroductionScreen(
+    return IntroductionScreen(globalBackgroundColor: AppColors.white,
       pages: [
         PageViewModel(
           title: "Welcome to Pilog iDQM App",
           body: "Explore our latest features and stay up to date with our services.",
           image: const Center(child: Icon(Icons.business, size: 100, color: Colors.blue)),
           decoration: PageDecoration(
-            pageColor: Colors.blue[50],
+            pageColor: AppColors.white,
             titleTextStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
             bodyTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
@@ -26,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
           body: "Read our latest articles and insights into the industry.",
           image: const Center(child: Icon(Icons.article, size: 100, color: Colors.green)),
           decoration: PageDecoration(
-            pageColor: Colors.green[50],
+    pageColor: AppColors.white,
             titleTextStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
             bodyTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
@@ -36,7 +37,7 @@ class OnboardingScreen extends StatelessWidget {
           body: "Learn about the wide range of services we provide.",
           image: const Center(child: Icon(Icons.design_services, size: 100, color: Colors.orange)),
           decoration: PageDecoration(
-            pageColor: Colors.orange[50],
+           pageColor: AppColors.white,
             titleTextStyle: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
             bodyTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
           ),
@@ -56,14 +57,14 @@ class OnboardingScreen extends StatelessWidget {
           MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
       },
-      showSkipButton: true,
-      skip: const Text("Skip"),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
+      showSkipButton: true,curve: Curves.bounceInOut,
+      skip:  Text("Skip",style: const TextStyle(color: AppColors.blueShadeGradiant),),
+      next: const Icon(Icons.arrow_forward_ios_rounded,color: AppColors.blueShadeGradiant,),
+      done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600,color: AppColors.blueShadeGradiant)),
       dotsDecorator: DotsDecorator(
         size: const Size(10.0, 10.0),
         activeSize: const Size(22.0, 10.0),
-        activeColor: Colors.blue,
+        activeColor: AppColors.blueShadeGradiant,
         color: Colors.grey,
         spacing: const EdgeInsets.symmetric(horizontal: 3.0),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),

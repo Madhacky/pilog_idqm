@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen>
     return LoaderOverlay(
       useDefaultLoading: true,
       child: Scaffold(
+        backgroundColor: AppColors.white,
         body: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -68,7 +69,9 @@ class _LoginScreenState extends State<LoginScreen>
 
   Widget buildLoginForm(bool isTablet) {
     return Card(
-      elevation: 0.0,
+      elevation: 5,
+      color: AppColors.white,
+      shadowColor: AppColors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(color: AppColors.blueShadeGradiant)),

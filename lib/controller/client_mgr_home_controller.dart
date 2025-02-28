@@ -704,4 +704,6 @@ class ClientMgrHomeController extends GetxController
       return Future.error(e.toString());
     }
   }
+
+
 }

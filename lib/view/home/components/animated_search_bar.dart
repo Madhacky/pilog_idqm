@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pilog_idqm/controller/client_mgr_home_controller.dart';
 import 'package:pilog_idqm/global/app_colors.dart';
+import 'package:pilog_idqm/helpers/search_stats_manager.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
-
 
 class AnimatedSearchBar extends StatelessWidget {
   final ClientMgrHomeController controller;
+   final SearchAnalyticsService analyticsService;
 
-  const AnimatedSearchBar({super.key, required this.controller});
+  const AnimatedSearchBar({super.key, required this.controller, required this.analyticsService});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,8 @@ class AnimatedSearchBar extends StatelessWidget {
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Image.asset(
@@ -64,7 +66,8 @@ class AnimatedSearchBar extends StatelessWidget {
             ),
           ),
           suffixIcon: IconButton(
-            icon: const Icon(Icons.search_rounded, color: AppColors.blueShadeGradiant),
+            icon: const Icon(Icons.search_rounded,
+                color: AppColors.blueShadeGradiant),
             onPressed: () => _handleSearch(context),
           ),
         ),
@@ -72,9 +75,15 @@ class AnimatedSearchBar extends StatelessWidget {
     );
   }
 
-  void _handleSearch(BuildContext context) {
+  void _handleSearch(BuildContext context) async {
     if (controller.searchController.text.isNotEmpty) {
+    // Save search analytics
+      analyticsService.saveSearchData(
+        DateTime.now(), 
+        1  // Increment search count by 1
+      );
       controller.onTapSearch();
+      // Log search count
     } else {
       ToastCustom.infoToast(context, "Please enter search query");
     }

@@ -1,15 +1,18 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pilog_idqm/helpers/api_services.dart';
+import 'package:pilog_idqm/helpers/init_services.dart';
+
+import 'package:pilog_idqm/helpers/mixpanel_manager.dart';
 import 'package:pilog_idqm/helpers/shared_preferences_helpers.dart';
 import 'package:pilog_idqm/helpers/toasts.dart';
 import 'package:pilog_idqm/model/login_model.dart';
 import 'package:pilog_idqm/view/home/components/home_content.dart';
 import 'package:pilog_idqm/view/home/home_screen.dart';
-
 
 class LoginController extends GetxController {
   static late String host_url;
@@ -24,8 +27,6 @@ class LoginController extends GetxController {
   final userError = false.obs;
   final passError = false.obs;
   final isLoading = false.obs;
-
-  LoginController();
 
   RxBool isUserLoggedIn = RxBool(false);
   RxBool isAnimationComplete = RxBool(false);
@@ -56,16 +57,16 @@ class LoginController extends GetxController {
         await SharedPreferencesHelper.setRegion(userLoginModel.ssRegion);
         await SharedPreferencesHelper.setInstance(userLoginModel.ssInstance);
 
-
-
         if (context.mounted) {
           context.loaderOverlay.hide();
           ToastCustom.successToast(
               context, "Welcome ${userLoginModel.ssUsername}");
+          await InitServices.injectDependencies();
+    
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
+              builder: (context) => HomeScreen(),
             ),
           );
         }

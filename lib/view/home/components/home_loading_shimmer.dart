@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:pilog_idqm/global/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AssetDataCardShimmer extends StatelessWidget {
@@ -11,7 +12,8 @@ class AssetDataCardShimmer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Card(
-        elevation: 5,
+            color: AppColors.white,
+      elevation: 5,shadowColor: AppColors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
