@@ -118,7 +118,7 @@ class _StackCardToggleState extends State<StackCardToggle> {
               duration: const Duration(milliseconds: 2500),
               builder: (context, value, child) {
                 return ElevatedButton(
-                  iconAlignment: IconAlignment.end,
+                 
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

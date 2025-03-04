@@ -35,7 +35,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   dropdown_search: ^5.0.6
   file_picker: ^8.0.7
-  fl_chart: ^0.55.2
+  fl_chart: ^0.70.2
   floating_action_bubble: ^1.1.4
   flutter:
     sdk: flutter

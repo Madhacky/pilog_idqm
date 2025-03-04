@@ -16,17 +16,25 @@ Future<void> showUploadAttachmentDialog(
   Future<void> takePicture() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
-    
+
     if (image != null) {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: image.path,
         uiSettings: [
           AndroidUiSettings(
-            toolbarTitle: 'Crop Image',
+            
+            toolbarTitle: 'Crop Images',
             toolbarColor: AppColors.blueShadeGradiant,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false,
+            // Add these parameters:
+            hideBottomControls: false,
+            showCropGrid: true,
+            cropFrameStrokeWidth: 2,
+            cropGridRowCount: 3,
+            cropGridColumnCount: 3,
+            activeControlsWidgetColor: AppColors.blueShadeGradiant,
           ),
         ],
       );
@@ -61,7 +69,8 @@ Future<void> showUploadAttachmentDialog(
               height: 120,
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.blueShadeGradiant, width: 2),
+                border:
+                    Border.all(color: AppColors.blueShadeGradiant, width: 2),
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.grey[100],
               ),
@@ -87,7 +96,8 @@ Future<void> showUploadAttachmentDialog(
               children: [
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     backgroundColor: AppColors.blueShadeGradiant,
                   ),
                   onPressed: () async {
@@ -102,7 +112,8 @@ Future<void> showUploadAttachmentDialog(
                 ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     backgroundColor: AppColors.blueShadeGradiant,
                   ),
                   onPressed: () async {
